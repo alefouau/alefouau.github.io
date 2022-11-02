@@ -1,0 +1,66 @@
+@font-face {
+    font-family: Product Sans;
+    src: url(./font.ttf);
+}
+body {
+    margin:0;padding:0;
+    font-family: Product Sans;
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+    background-image: url(./bg.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-blend-mode: darken;
+}
+body * {box-sizing: border-box; margin: 0; padding:0;}
+main {padding: 1rem;}
+.tab_content {display: none;}
+#startpage {display: block;}
+/*botoes do cabecalho*/
+.tab_btn {  
+    background-color: transparent;
+    font-size: 12pt;  
+    color: white;
+    border: 4px;
+    padding: 1rem;
+}
+.tab_btn:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-bottom: 4px solid transparent;
+}
+#active {border-bottom: 4px solid rgb(255, 123, 123);}
+/*cabecalho e etc */
+header  {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main p {
+    font-size: 18pt;
+    line-height: 48pt;
+}
+#logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#logo p {
+    font-size: 16pt;
+    height: 16pt;
+    color: rgb(255, 123, 123);
+    font-weight:bold;
+    letter-spacing: 2px;
+}
+#logo img {
+    border-radius: 100%;
+    margin: 0.5rem;
+    height: 2rem;
+    width: auto;
+}
+a {
+    display: block;
+    color: rgb(255, 123, 123);
+}
