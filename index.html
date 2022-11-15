@@ -1,57 +1,65 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>alefouau</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" type ="text/css" href ="style.css">
-        <script src="script.js"></script>
-        <link rel="icon" type="image/x-icon" href="favicon.webp">
-    </head>
-    <body>
-        <header>
-            <span id="logo">
-                <img src="favicon.webp">
-                <p>Alefo</p>
-            </span>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>alefouau - Everything will be daijoubu ❤</title>
+    <meta name="description" content="Me chamo alefo, sou iniciante em html5. Essa é minha página web, com projetos porcaria, tutoriais e outras coisas.">
+    <link rel="icon" type="image/x-icon" href="favicon.webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type ="text/css" href ="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body class="dark-mode">
+    <header>
+        <header-bar>
+            <logo-container title="Logotipo do site" id="logo">
+                <img title="Icone do site (Shimarin)" src="favicon.webp">
+                <a>Alefo</a>
+            </logo-container>
             <nav>
-                <button class="tab_btn" id="active" type="button" onclick="goto(0);">Pagina Inicial</button>
-                <button class="tab_btn" type="button" onclick="goto(1);">Projetos</button>
-                <button class="tab_btn" type="button" onclick="goto(2);">Downloads</button>
-                <button class="tab_btn" type="button" onclick="goto(3);">Sobre</button>
+                <button onclick="tab(0)">Início</button>
+                <button onclick="tab(1)">Projetos e Downloads</button>
+                <button onclick="tab(2)">Postagens</button>
+                <button onclick="tab(3)">Sobre</button>
             </nav>
-        </header>
-        <main>
-            <div class="tab_content" id="startpage">
-                <h1>Bem-vindo a minha pagina, porem....</h1>
-                <p>Pagina em construção, "novidades" (kkkkj) em breve...</p>
-                <code>ERR:: CONTENT_EMPTY</code>
-            </div>
-            <div class="tab_content">
-                <h1>Não há projetos!</h1>
-                <p>...mas um dia haverá, eu espero.</p>
-                <code>ERR:: NO_PROJECTS_FOUND</code>
-            </div>
-            <div class="tab_content">
-                <h1>Erro, Não há downloads aqui!</h1>
-                <p>...em breve tambem...</p>
-                <code>ERR:: NO_DOWNLOADS_FOUND</code>
-            </div>
-            <div class="tab_content">
-                <h1>Sobre</h1>
-                <img width="72px" height="72px" src="favicon.webp">
-                <p>Sou só um cara de 19 anos que está estudando HTML/CSS/JS e que gosta de animes de Slice of Life</p>
-                <p>Imagem de fundo: Hitori Gotou (Bocchi the rock)</p>
-                <p>Foto de perfil/logo do site: Rin Shima (Yurucamp)</p>
-                <a href="https://github.com/alefouau/">Github</a>
-                <a href="https://facebook.com/alefoshima/">Facebook</a>
-                <a href="https://twitter.com/alefouau/">Twitter</a>
-            </div>
-        </main>
-        <footer>
+        </header-bar>
+        <img>
+        <banner-text>
+            <h1></h1>
+            <h2></h2>
+        </banner-text>
+    </header>
 
-        </footer>
-    </body>
-
+    <main>
+        <tabs-colection>
+            <tab-content tab-title="Bem-vindo" tab-desc="Pagina pessoal com projetos porcaria e outras coisas..." banner-image="./tab_banners/wellcome.webp">
+                <h1 style="font-size:128px; color:rgb(255, 50, 50)" >❤</h1>
+                <h2>Página em construção! (47% concluido)</h2>
+            </tab-content>
+            <tab-content tab-title="Projetos e Downloads" tab-desc="Projetos baixaveis" banner-image="./tab_banners/projects.webp">
+                <card-list>
+                    <card-content>
+                        <img src="./extensions/fbgc/icon.png">
+                        <section>
+                            <h4>Facebook Background Changer [EX]</h4>
+                            <p>Extensão que permite usar uma imagem customizada como plano de fundo no Facebook</p>
+                            <a href="./extensions/fbgc/fbgc.crx">Download</a>
+                        </section>
+                    </card-content>
+                </card-list>
+            </tab-content>
+            <tab-content tab-title="Postagens" tab-desc="Textos, tutoriais e etc" banner-image="./tab_banners/posts.webp">
+            </tab-content>
+            <tab-content tab-title="Sobre" tab-desc="Progresso da pagina: 43%..." banner-image="./tab_banners/about.webp">
+            </tab-content>
+        </tabs-colection>
+    </main>
+    <footer>
+        <a href="https://fb.me/alefo.shima">Facebook</a>
+        <a href="https://twitter.com/alefouau">Twitter</a>
+        <a href="https://instagram.com/alefouau">Instagram</a>
+        <a href="https://telegram.me/alefouau">Telegram</a>
+        <a href="https://github.com/alefouau">Github</a>
+    </footer>
+</body>
 </html>
