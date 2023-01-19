@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text with image masking</title>
+</head>
+<style>
+  html, body {background-color:black;}
+  * {margin:0; paddin:0;}
+  textarea {
+    background-image: url("a.png");
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    position: absolute;
+    inset:0;
+    border: none;
+    outline:none;
+  }
+  #imagepicker {
+    color: transparent;
+    height: 48px;
+    width: 48px;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: skyblue;
+    border-radius: 24px;
+  }
+  #imagepicker::-webkit-file-upload-button {
+    display: none;
+  }
+</style>
+<body>
+  <textarea>Digite algo...</textarea>
+  <input id="imagepicker" type="file">
+</body>
+<script>
+  let file, reader;
+  document.querySelector("#imagepicker").addEventListener("change", (e) => {
+    file = e.target.files[0];
+    reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = function() {
+        document.querySelector("textarea").style.backgroundImage ="url('"+reader.result+"')";
+    }
+  })
+	
+	</script>
+</html>
