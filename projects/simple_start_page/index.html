@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /*reset css*/
+    * {padding: 0; margin: 0; box-sizing: border-box; font-family: sans-serif; background: none; border: none;}
+    /*geral*/
+    body {
+        --accent-color: 355;
+        --border-radius: 24px;
+
+    }
+    #btn_settings {
+        position: fixed;
+        top: 0.5rem; right: 0.5rem;
+        padding: 0.5rem;
+        font-size: 9pt;
+        font-weight: bold;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    #btn_settings:hover {
+        background-color: rgba(255,255,255,0.15);
+        border-radius: 4px;
+    }
+    #bg {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+    /*principal*/
+    body > main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.5));
+    }
+    body > main > form {
+        width: 100%;
+        max-width: 480px;
+    }
+    body > main > form > input[type="search"] {
+        padding: 0.5rem 1rem;
+        color: white;
+        font-size: 12pt;
+        background-color: rgba(25,25,25,0.5);
+        border: none;
+        border-radius: var(--border-radius);
+        width: 100%;
+    }
+    body > main > form > input[type="search"]::placeholder {
+        color: rgba(255,255,255,0.5);
+    }
+    body > main > form > input[type="search"]:focus {
+        outline: hsl(var(--accent-color), 100%, 75%) 2px solid;
+    }
+    
+    body > main > #bookmarks {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    body > main > #bookmarks > * {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem;
+        gap: 0.5rem;
+        text-decoration: none;
+        background: none;
+        border: none;
+    }
+    body > main > #bookmarks > * > a {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 96px;
+        color: white;
+        font-size: 12pt;
+        text-shadow: 0px 0px 2px black;
+    }
+    body > main > #bookmarks > *:hover {
+        background-color: hsla(var(--accent-color), 100%, 75%, 0.25);
+    }
+    body > main > #bookmarks > * > img, body > main > #bookmarks > * > svg {
+        width: 2.5rem;
+        height: 2.5rem;
+        background-color: hsl(var(--accent-color), 100%, 75%);
+        border-radius: var(--border-radius);
+        padding: 0.5rem;
+    }
+    body > main > #bookmarks > .bookmark {
+        position: relative;
+    }
+    body > main > #bookmarks > .bookmark > .delete {
+        display: none;
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        background-color: rgb(25,25,25);
+        color: white;
+        font-family: monospace;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        width: 1.5rem;
+        text-align: center;
+        border-radius: 24px;
+    }
+    body > main > #bookmarks > .bookmark:hover > .delete {
+        display: block;
+    }
+    body > main > #clock {
+        font-size: 6rem;
+        color: rgba(255,255,255,0.75);
+    }
+    /*caixas de dialogo*/
+    dialog {
+        margin: auto;
+        background-color: rgb(25,25,25);
+        color: white;
+        border: none;
+        border-radius: 8px;
+    }
+    dialog::backdrop {
+        background-color: rgba(0,0,0,0.5);
+    }
+    dialog header > * {
+        padding: 1rem;
+    }
+    dialog main {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    dialog footer {
+        text-align: right;
+        padding: 0.5rem;
+    }
+    dialog button {
+        padding: 0.5rem;
+        border: none;
+        background: none;
+        color: hsl(var(--accent-color), 100%, 75%);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+    dialog button:hover {
+        background-color: hsla(var(--accent-color), 100%, 75%, 0.25);
+    }
+    dialog button:disabled {
+        opacity: 0.5;
+    }
+    dialog ul {
+        list-style: none;
+    }
+    dialog ul li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.5rem 1rem;
+    } 
+    dialog ul li p {
+        color: rgba(255,255,255,0.75);
+    }
+    dialog ul b {
+        padding: 0 1rem;
+        letter-spacing: 1px;
+        color: hsl(var(--accent-color), 100%, 75%);
+        text-transform: uppercase;
+    }
+    dialog ul *:hover {
+        background-color: rgba(255,255,255,0.25);
+    }
+    dialog input[type="text"], dialog input[type="url"] {
+        padding: 0.5rem;
+        border: none;
+        background-color: transparent;
+        border-bottom: 2px solid gray;
+        color: rgb(255, 255, 255);
+    }
+    dialog input[type="text"]:focus, dialog input[type="url"]:focus {
+        border-bottom: 2px solid hsl(var(--accent-color), 100%, 75%);
+        outline: none;
+    }
+    dialog input[type="range"] {
+        appearance: none;
+        height: 3px;
+        background: hsla(var(--accent-color), 100%, 75%, 0.25);
+        background-image: linear-gradient(hsl(var(--accent-color), 100%, 75%), hsl(var(--accent-color), 100%, 75%));
+        background-size: 50% 100%;
+        background-repeat: no-repeat;
+        margin: 0.5rem 0;
+    }
+    dialog input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        background-color: hsl(var(--accent-color), 100%, 75%);
+        border-radius: var(--border-radius);
+        height: 1rem;
+        width: 1rem;
+    }
+
+
+</style>
+<body>
+    <img id="bg">
+    <!--main-->
+    <main>
+        <button id="btn_settings" type="button" onclick="document.getElementById('settings').showModal()">Settings</button>
+        <div id="clock">00:00:00</div>
+        <form onsubmit="window.location.href = loadedData.settings.searchprovider+i_search; return false;">
+            <input type="search" oninput="i_search = this.value" placeholder="Pesquise por algo...">
+        </form>
+        <div id="bookmarks">
+            <button id="btn_addbookmark" onclick="document.getElementById('addbookmark').showModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" fill="white"><path d="M446.667-446.667H200v-66.666h246.667V-760h66.666v246.667H760v66.666H513.333V-200h-66.666v-246.667Z"/></svg>
+                <a>Adicionar</a>
+            </button>
+        </div>
+    </main>
+    <!--Dialogs-->
+    <dialog id="addbookmark">   
+        <form method="dialog" onsubmit="addBookmarkToHTML(i_bname,i_burl)" oninput="document.getElementById('b_addfav').disabled = (i_bname !== '' && i_burl !== '') ? false : true;
+        ">
+            <header>
+                <h3>Adicionar Favorito</h3>
+            </header>
+            <main>
+                <ul>   
+                    <li>
+                        <input type="text" oninput="i_bname = this.value" placeholder="Nome">
+                    </li>
+                    <li>
+                        <input type="url" oninput="i_burl = this.value" placeholder="Url">
+                    </li>
+                </ul>
+            </main>
+            <footer>
+                <button type="button" class="close">Fechar</button>
+                <button type="submit" id="b_addfav" disabled>Adicionar</button>
+            </footer>
+        </form>
+    </dialog>
+    <dialog id="settings">
+        <form method="dialog">
+            <header>
+                <h3>Configurações</h3>
+            </header>
+            <main>
+                <ul>
+                    <b>Aparência</b>
+                    <li>
+                        <span>Cor principal</span>
+                        <p>Deslize para escolher a cor</p>
+                        <input type="range" min="0" max="360" oninput="applySettings('accentcolor', this.value, true)">
+                    </li>
+                    <li>
+                        <span>Bordas</span>
+                        <p>Quanto maior, mais arredondado as coisas ficam</p>
+                        <input type="range" min="0" max="24" oninput="applySettings('borderradius', this.value, true)">
+                    </li>
+                    <li>
+                        <span>Imagem de fundo</span>
+                        <input type="file" onchange="applySettings('background', this.files[0], true) ">
+                    </li>
+                </ul>
+                <ul>
+                    <b>Comportamento</b>
+                    <li>
+                        <span>Provedor de busca</span>
+                        <p>Serviço usado para pesquisas</p>
+                        <input type="url" placeholder="Ex: https://duckduckgo.com/?q=" oninput="applySettings('searchprovider', this.value, true)">
+                    </li>
+                </ul>
+            </main>
+            <footer>
+                <button type="button" class="close">Fechar</button>
+            </footer>
+        </form>
+    </dialog>
+</body>
+<script>
+    /*------------------relogio---------------------*/
+    setInterval(()=>{
+        var time = new Date();
+        var hh = time.getHours();
+        var mm = time.getMinutes();
+        var ss = time.getSeconds();
+        if (hh < 10)
+        {
+            hh = "0"+hh;
+        }
+        if (mm < 10)
+        {
+            mm = "0"+mm;
+        }
+        if (ss < 10)
+        {
+            ss = "0"+ss;
+        }
+        document.getElementById("clock").innerText = hh+":"+mm+":"+ss;
+    })
+    /*------------------constantes e variaveis------------------------*/
+    const APP_ID = "simple_start_page"
+    /*
+    variaveis que recebem os dados dos inputs
+    ainda nao sei se seria melhor usar eventlisteners, porem dessa forma creio que seja mais facil
+    loadedData sao os dados carregados do localstorage.
+    e complicado carregar dados direto do localstorage, entao uso essa variavel pra guardar como object
+    */
+    let i_search = '' ; i_bname = '' ; i_burl = '' ; freader = '';
+    let loadedData;
+    /*
+    dados padrao (configuracoes e favoritos)
+    provavelmente essa variavel nao existira em versoes futuras
+    pretendo nao colocar favoritos iniciais.
+    configuracoes de aparencia padrao serao embutidos ja no css
+    e provedor de busca sera solicitado ao usuario na primeira vez que ele abrir
+    */
+    const DEFAULT_DATA = {
+        "bookmarks":[
+            {
+                "name":"DuckDuckGo",
+                "url":"https://duckduckgo.com"
+            },
+            {
+                "name":"My Website",
+                "url":"https://alefouau.github.io"
+            },
+            {
+                "name":"Test",
+                "url":"javascript:alert('Hello World!')"
+            }
+        ],
+        "settings":{
+            "accentcolor":"0",
+            "borderradius":"24",
+            "background":"black",
+            "searchprovider":"https://duckduckgo.com/?q="
+        }
+    }
+
+    /*------------------inicializacao------------------------*/
+    /*
+    carrega todos os favoritos e dados
+    se ha dados salvos no localstorage, carregue-os
+    se nao ha dados, carregue os dados padrao
+    pretendo por essa parte dentro de um onloaded, mas por enquanto vai ficar por fora...
+    */
+    if(localStorage.getItem(APP_ID) != undefined){
+        loadedData = JSON.parse(localStorage.getItem(APP_ID));
+        console.log("Há dados ja existentes no localstorage, dados carregados");
+    }
+    else {
+        loadedData = DEFAULT_DATA;
+        console.log("Não há dados salvos no localstorage, dados padrao carregados!");
+    }
+    /*gera os favoritos no html*/
+    loadedData.bookmarks.forEach((item, index) => {
+        addBookmarkToHTML(item.name, item.url, index);
+    });
+    /*carrega configuracoes*/ 
+    applySettings('accentcolor', loadedData.settings.accentcolor, false);
+    applySettings('borderradius', loadedData.settings.borderradius, false);
+    applySettings('searchprovider', loadedData.settings.searchprovider, false);
+    applySettings('background', loadedData.settings.background, false);
+
+    /*-----------------adicionais--------------*/
+    /*botoes de fechar de cada dialogo
+    para cada dialog (item), se houver um elemento de classe close, 
+    adicione um evento de clique a esse botao, 
+    onde acionara o fechamento do dialogo em questao (item)
+    Uma forma universal de configurar os botoes de fechar
+    nao importa a posicao do botao, se ele é um .close e esta dentro de um dialog,
+    ele o fecha.
+    */
+    Array.from(document.querySelectorAll("dialog")).forEach((item)=>{
+    if(item.querySelector(".close")){
+        item.querySelector(".close").addEventListener("click", ()=>{
+            item.close();
+        })
+    }
+    });
+    /*estilizacao das barras de range
+    o css nativamente uma personalizacao pra as barras de range
+    entao o jeito é apelar pra gambiarras como essa:
+    */
+    Array.from(document.querySelectorAll("input[type='range']")).forEach((item)=>{
+        item.addEventListener("input", (e)=>{
+            e.target.style.backgroundSize = (e.target.value - e.target.min) * 100 / (e.target.max - e.target.min) + '% 100%';
+        })
+    });
+
+    /*------------------funcoes------------------------*/
+    /*adiciona favoritos ao html*/
+    function addBookmarkToHTML(name, url, id) {
+        newElement = document.createElement("a");
+        newElement.classList = 'bookmark';
+        newElement.href = url;
+        newElement.innerHTML = `<span class='delete' onclick='remove(this.parentNode.id); return false;'>X</span><img src='https://www.google.com/s2/favicons?domain=${url}&sz=64'><a>${name}</a>`;
+        document.getElementById("bookmarks").appendChild(newElement);
+        document.getElementById("bookmarks").appendChild(document.getElementById("btn_addbookmark"));
+        if(id >= 0 ) {
+            newElement.id = id;
+        }
+        else {
+            newElement.id = loadedData.bookmarks.push({"name":name,"url":url}) -1;
+            saveChanges();
+        }
+        newElement.addEventListener('mouseover', (e)=>{
+            x = e;
+        })
+    }
+    function remove(id) {
+        loadedData.bookmarks.splice(id, 1);
+        console.log(id+' removido') 
+        saveChanges();
+        Array.from(document.getElementsByClassName('bookmark')).forEach((item, index) => {
+            item.remove();
+        })
+        loadedData.bookmarks.forEach((item, index) => {
+            addBookmarkToHTML(item.name, item.url, index);
+        });
+    }
+    function applySettings(setting, value, pushToJson) {
+        switch(setting)  {
+            case 'accentcolor':
+                document.body.style.setProperty('--accent-color', value);
+                loadedData.settings.accentcolor = value;
+                break;
+            case 'borderradius':
+                document.body.style.setProperty('--border-radius', value + "px");
+                loadedData.settings.borderradius = value;
+                break;
+            case 'background': 
+                var imgElement = document.getElementById("bg");
+                if(typeof(value) == "object"){
+                    freader = new FileReader();
+                    freader.onloadend = ()=>{
+                        imgElement.src = freader.result;
+                        loadedData.settings.background = freader.result;
+                        saveChanges();
+                    };
+                    freader.readAsDataURL(value);
+                }
+                else{
+                    imgElement.src = value;
+                }
+                break;
+            case 'searchprovider': 
+                loadedData.settings.searchprovider = value;
+                break; 
+        }
+        if(pushToJson){
+            saveChanges();
+        }
+    }
+    /*
+    salva mudanças
+    eu poderia ter usado cookies, mas manipular jsons é mais facil
+    porem nao é eficiente
+    uma vez que eu preciso upar um json inteiro pro localstorage e ainda converter em string a cada alteração que faço
+    */
+    function saveChanges(){
+        localStorage.setItem(APP_ID, JSON.stringify(loadedData));  
+        console.log("dados salvo");
+    }
+
+
+    function teste(x) {
+        (x) ? uai = " foi definido" : uai = 'nao foi definido um numero' ;
+    }
+</script>
+</html>
