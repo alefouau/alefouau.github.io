@@ -12,7 +12,21 @@
     body {
         --accent-color: 355;
         --border-radius: 24px;
-
+        background-color: black;
+    }
+       /*scrollbars*/
+    *::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    *::-webkit-scrollbar {
+        width: 12px;
+        background: transparent
+    }
+    *::-webkit-scrollbar-thumb {
+        background: gray;
+        border-radius: 8px;
+        border: 4px solid transparent;
+        background-clip: content-box;
     }
     #btn_settings {
         position: fixed;
@@ -24,6 +38,9 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+    button , a[href], li[onclick]{
+        cursor: pointer;
+    }
     #btn_settings:hover {
         background-color: rgba(255,255,255,0.15);
         border-radius: 4px;
@@ -34,6 +51,10 @@
         height: 100%;
         object-fit: cover;
         z-index: -1;
+        outline: none;
+    }
+    #bg[src=''] {
+        display: none;
     }
     /*principal*/
     body > main {
@@ -66,7 +87,6 @@
     body > main > form > input[type="search"]:focus {
         outline: hsl(var(--accent-color), 100%, 75%) 2px solid;
     }
-    
     body > main > #bookmarks {
         display: flex;
         justify-content: center;
@@ -111,7 +131,6 @@
         right: -0.5rem;
         background-color: rgb(25,25,25);
         color: white;
-        font-family: monospace;
         font-size: 1rem;
         line-height: 1.5rem;
         width: 1.5rem;
@@ -122,7 +141,7 @@
         display: block;
     }
     body > main > #clock {
-        font-size: 6rem;
+        font-size: 5rem;
         color: rgba(255,255,255,0.75);
     }
     /*caixas de dialogo*/
@@ -132,6 +151,8 @@
         color: white;
         border: none;
         border-radius: 8px;
+        max-width: 480px;
+        overflow: hidden;
     }
     dialog::backdrop {
         background-color: rgba(0,0,0,0.5);
@@ -143,6 +164,11 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        overflow: auto;
+        max-height: 60vh;
+    }
+    dialog main:focus {
+        outline: none;
     }
     dialog footer {
         text-align: right;
@@ -152,14 +178,14 @@
         padding: 0.5rem;
         border: none;
         background: none;
-        color: hsl(var(--accent-color), 100%, 75%);
+        color: hsl(var(--accent-color), 100%, 70%);
         text-transform: uppercase;
         letter-spacing: 1px;
         border-radius: 4px;
         font-weight: bold;
     }
     dialog button:hover {
-        background-color: hsla(var(--accent-color), 100%, 75%, 0.25);
+        background-color: hsla(var(--accent-color), 100%, 70%, 0.25);
     }
     dialog button:disabled {
         opacity: 0.5;
@@ -167,23 +193,25 @@
     dialog ul {
         list-style: none;
     }
-    dialog ul li {
+    dialog ul li, dialog ul a {
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
         padding: 0.5rem 1rem;
-    } 
-    dialog ul li p {
+        text-decoration: none;
+        color: white;
+    }
+    dialog ul li:hover, dialog ul a:hover {
+        background-color: rgba(255,255,255,0.15);
+    }
+    dialog ul p {
         color: rgba(255,255,255,0.75);
     }
     dialog ul b {
         padding: 0 1rem;
         letter-spacing: 1px;
-        color: hsl(var(--accent-color), 100%, 75%);
+        color: hsl(var(--accent-color), 100%, 70%);
         text-transform: uppercase;
-    }
-    dialog ul *:hover {
-        background-color: rgba(255,255,255,0.25);
     }
     dialog input[type="text"], dialog input[type="url"] {
         padding: 0.5rem;
@@ -193,39 +221,61 @@
         color: rgb(255, 255, 255);
     }
     dialog input[type="text"]:focus, dialog input[type="url"]:focus {
-        border-bottom: 2px solid hsl(var(--accent-color), 100%, 75%);
+        border-bottom: 2px solid hsl(var(--accent-color), 100%, 70%);
         outline: none;
     }
     dialog input[type="range"] {
         appearance: none;
         height: 3px;
-        background: hsla(var(--accent-color), 100%, 75%, 0.25);
-        background-image: linear-gradient(hsl(var(--accent-color), 100%, 75%), hsl(var(--accent-color), 100%, 75%));
+        background: hsla(var(--accent-color), 100%, 70%, 0.25);
+        background-image: linear-gradient(hsl(var(--accent-color), 100%, 70%), hsl(var(--accent-color), 100%, 75%));
         background-size: 50% 100%;
         background-repeat: no-repeat;
         margin: 0.5rem 0;
     }
     dialog input[type="range"]::-webkit-slider-thumb {
         appearance: none;
-        background-color: hsl(var(--accent-color), 100%, 75%);
+        background-color: hsl(var(--accent-color), 100%, 70%);
         border-radius: var(--border-radius);
         height: 1rem;
         width: 1rem;
     }
-
+    dialog > main section {
+        padding: 0 1rem ;
+    }
+    dialog > main section > * {
+        margin: 0.5rem 0;
+    }
+    dialog > main section h1 , h2 {
+        font-weight: lighter;
+    }
+    dialog > main section h4 {
+        font-weight: bold;
+    }
+    dialog > main section p {
+        line-height: 16pt;
+        opacity: 0.85;
+    }
+    dialog > main section a {
+        color: hsl(var(--accent-color), 100%, 70%);
+    }
+    dialog > img {
+        width: 100%;
+    }
 
 </style>
 <body>
-    <img id="bg">
+    <!--background-->
+    <img id="bg" alt="">
     <!--main-->
     <main>
-        <button id="btn_settings" type="button" onclick="document.getElementById('settings').showModal()">Settings</button>
+        <button id="btn_settings" type="button" onclick="showDialog('settings')">Settings</button>
         <div id="clock">00:00:00</div>
-        <form onsubmit="window.location.href = loadedData.settings.searchprovider+i_search; return false;">
-            <input type="search" oninput="i_search = this.value" placeholder="Pesquise por algo...">
+        <form onsubmit="window.location.href = loadedData.settings.searchprovider+this.children[0].value; return false;">
+            <input type="search" placeholder="Pesquise por algo...">
         </form>
         <div id="bookmarks">
-            <button id="btn_addbookmark" onclick="document.getElementById('addbookmark').showModal()">
+            <button id="btn_addbookmark" onclick="showDialog('addbookmark')">
                 <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" fill="white"><path d="M446.667-446.667H200v-66.666h246.667V-760h66.666v246.667H760v66.666H513.333V-200h-66.666v-246.667Z"/></svg>
                 <a>Adicionar</a>
             </button>
@@ -233,8 +283,7 @@
     </main>
     <!--Dialogs-->
     <dialog id="addbookmark">   
-        <form method="dialog" onsubmit="addBookmarkToHTML(i_bname,i_burl)" oninput="document.getElementById('b_addfav').disabled = (i_bname !== '' && i_burl !== '') ? false : true;
-        ">
+        <form method="dialog" onsubmit="addBookmarkToHTML(i_bname,i_burl)" oninput="document.getElementById('b_addfav').disabled = (i_bname !== '' && i_burl !== '') ? false : true;">
             <header>
                 <h3>Adicionar Favorito</h3>
             </header>
@@ -265,12 +314,12 @@
                     <li>
                         <span>Cor principal</span>
                         <p>Deslize para escolher a cor</p>
-                        <input type="range" min="0" max="360" oninput="applySettings('accentcolor', this.value, true)">
+                        <input type="range" min="0" max="360" value='0' oninput="applySettings('accentcolor', this.value, true)">
                     </li>
                     <li>
                         <span>Bordas</span>
                         <p>Quanto maior, mais arredondado as coisas ficam</p>
-                        <input type="range" min="0" max="24" oninput="applySettings('borderradius', this.value, true)">
+                        <input type="range" min="0" max="24" value="24" oninput="applySettings('borderradius', this.value, true)">
                     </li>
                     <li>
                         <span>Imagem de fundo</span>
@@ -285,16 +334,133 @@
                         <input type="url" placeholder="Ex: https://duckduckgo.com/?q=" oninput="applySettings('searchprovider', this.value, true)">
                     </li>
                 </ul>
+                <ul>
+                    <b>Sobre</b>
+                    <li>
+                        <span>Simple Start Page</span>
+                        <p>v0.1 Alpha</p>
+                        <p>By Alefo</p>
+                    </li>
+                    <a href="https://alefouau.github.io">
+                        <span>Website</span>
+                        <p>alefouau.github.io</p>
+                    </a>
+                    <li onclick="showDialog('wellcome')">
+                        <span>Tela de boas vindas</span>
+                        <p>Clique aqui para reexibir a tela de boas vindas</p>
+                    </li>
+                </ul>
             </main>
             <footer>
                 <button type="button" class="close">Fechar</button>
             </footer>
         </form>
     </dialog>
+    <dialog id="wellcome">
+        <main tabindex="0">
+            <img src="https://staticg.sportskeeda.com/editor/2023/06/d9721-16862946859152-1920.jpg?w=840">
+            <section>
+                <h1>Bem vindo ao Simple Start Page</h1>
+                <p>Uma pagina de nove guia simples, porem personalizável, sem anuncios, rastreadores, ou bibliotecas inuteis.</p>
+                <p>Por se tratar de uma versão em desenvolvimento, poderá haver bugs estranhos</p>
+            </section>
+            <section>
+                <h2>Bugs conhecidos</h2>
+                <h4>Não conseguir criar novos favoritos após definir uma tela de fundo</h4>
+                <p>Isso acontece por conta da API usada pra armazenar informaçoes. Por motivos de segurança, a API do localstorage, usada pra guardar dados, é limitada a 5mb ou até menos</p>
+                <p>Pra salvar uma imagem internamente, é necessario converte-la em base64 e depois armazenar como string no localstorage, o que DOBRA o tamanho da imagem.</p>
+                <p>Existe uma outra API que dizem ser boa pra guardar dados grandes chamada indexedDB, porem é complicado de se implementar, até la, evite usar imagens grandes.</p>
+                <p>Recomendado: jpg, webp menores que 2mb</p>
+                <h4>Não é possivel editar favoritos</h4>
+                <p>Num futuro proximo irei implementar isso</p>
+            </section>
+            <section>
+                <h2>Avalie meu codigo!</h2>
+                <p>Caso você saiba sobre html css js, se puder, AVALIE MEU CODIGO. Isso já me ajudaria bastante</p>
+                <p>A maior dificuldade de fazer isso nem é a implementação em si, e sim a organização do codigo</p>
+                <p>Existem mil maneiras de se fazer algo, e eu quero fazer o melhor possivel pra deixar o codigo o mais legivel e menor possivel</p>
+                <p>Então caso tenha observaçoes a respeito do codigo, considere criar um pull request/inssue no <a href="https://github.com/alefouau/alefouau.github.io/tree/main/projects/simple_start_page">repositorio do github</a></p>
+            </section>
+        </main>
+        <footer>
+            <button type="button" class="close">Fechar</button>
+        </footer>
+    </dialog>
 </body>
 <script>
-    /*------------------relogio---------------------*/
-    setInterval(()=>{
+    /*------------------constantes e variaveis------------------------*/
+    const APP_ID = "simple_start_page"
+    /*variaveis pra inputs. irei tirar tudo isso em breve e migrar pra eventlisteners*/
+    let loadedData;
+    let i_bname;
+    let i_burl;
+    let i_search;
+    /*
+    dados padrao (configuracoes e favoritos)
+    provavelmente essa variavel nao existira em versoes futuras
+    pretendo nao colocar favoritos iniciais.
+    configuracoes de aparencia padrao serao embutidos ja no css
+    e provedor de busca sera solicitado ao usuario na primeira vez que ele abrir
+    */
+    const DEFAULT_DATA = {
+        "bookmarks":[
+            {
+                "name":"Wellcome",
+                "url":"javascript:showDialog('wellcome')"
+            },
+            {
+                "name":"alefouau",
+                "url":"https://alefouau.github.io"
+            },
+            {
+                "name":"Hello!",
+                "url":"javascript:alert('Hello World!')"
+            }
+        ],
+        "settings":{
+            "accentcolor":"0",
+            "borderradius":"24",
+            "background":"",
+            "searchprovider":"https://duckduckgo.com/?q="
+        }
+    }
+
+    /*------------------inicializacao------------------------*/
+    /*carregamento de dados*/
+    if(localStorage.getItem(APP_ID) != undefined){/*se houver dados no localstorage, carregue-os*/
+        loadedData = JSON.parse(localStorage.getItem(APP_ID));
+    }
+    else {/*caso contrario, aplique as configuracoes padrao e exiba o dialogo de boas vindas*/
+        loadedData = DEFAULT_DATA;
+        showDialog('wellcome');
+        saveChanges();
+    }
+    loadedData.bookmarks.forEach((item, id) => { /*gera os favoritos no html*/ addBookmarkToHTML(item.name, item.url, id); });
+    /*carrega configuracoes*/ 
+    applySettings('accentcolor', loadedData.settings.accentcolor, false);
+    applySettings('borderradius', loadedData.settings.borderradius, false);
+    applySettings('searchprovider', loadedData.settings.searchprovider, false);
+    applySettings('background', loadedData.settings.background, false);
+
+    /*-----------------adicionais--------------*/
+    /*
+    botoes de fechar de cada dialogo
+    pra cada dialogo onde houver um botao .close, adiciona um evento de click que ira fechar o dialogo
+    */
+    Array.from(document.querySelectorAll("dialog")).forEach((item)=>{ 
+        item.querySelector('.close') ? item.querySelector(".close").addEventListener("click", ()=>{item.close();}) : undefined;
+    });
+    /*
+    estilizacao das barras de range
+    o css nativamente uma personalizacao pra as barras de range
+    entao o jeito é apelar pra gambiarras como essa:
+    */
+    Array.from(document.querySelectorAll("input[type='range']")).forEach((item)=>{
+        item.addEventListener("input", (e)=>{
+            e.target.style.backgroundSize = (e.target.value - e.target.min) * 100 / (e.target.max - e.target.min) + '% 100%';
+        })
+    });
+    setInterval(()=>{/*relogio*/
         var time = new Date();
         var hh = time.getHours();
         var mm = time.getMinutes();
@@ -313,106 +479,16 @@
         }
         document.getElementById("clock").innerText = hh+":"+mm+":"+ss;
     })
-    /*------------------constantes e variaveis------------------------*/
-    const APP_ID = "simple_start_page"
-    /*
-    variaveis que recebem os dados dos inputs
-    ainda nao sei se seria melhor usar eventlisteners, porem dessa forma creio que seja mais facil
-    loadedData sao os dados carregados do localstorage.
-    e complicado carregar dados direto do localstorage, entao uso essa variavel pra guardar como object
-    */
-    let i_search = '' ; i_bname = '' ; i_burl = '' ; freader = '';
-    let loadedData;
-    /*
-    dados padrao (configuracoes e favoritos)
-    provavelmente essa variavel nao existira em versoes futuras
-    pretendo nao colocar favoritos iniciais.
-    configuracoes de aparencia padrao serao embutidos ja no css
-    e provedor de busca sera solicitado ao usuario na primeira vez que ele abrir
-    */
-    const DEFAULT_DATA = {
-        "bookmarks":[
-            {
-                "name":"DuckDuckGo",
-                "url":"https://duckduckgo.com"
-            },
-            {
-                "name":"My Website",
-                "url":"https://alefouau.github.io"
-            },
-            {
-                "name":"Test",
-                "url":"javascript:alert('Hello World!')"
-            }
-        ],
-        "settings":{
-            "accentcolor":"0",
-            "borderradius":"24",
-            "background":"black",
-            "searchprovider":"https://duckduckgo.com/?q="
-        }
-    }
-
-    /*------------------inicializacao------------------------*/
-    /*
-    carrega todos os favoritos e dados
-    se ha dados salvos no localstorage, carregue-os
-    se nao ha dados, carregue os dados padrao
-    pretendo por essa parte dentro de um onloaded, mas por enquanto vai ficar por fora...
-    */
-    if(localStorage.getItem(APP_ID) != undefined){
-        loadedData = JSON.parse(localStorage.getItem(APP_ID));
-        console.log("Há dados ja existentes no localstorage, dados carregados");
-    }
-    else {
-        loadedData = DEFAULT_DATA;
-        console.log("Não há dados salvos no localstorage, dados padrao carregados!");
-    }
-    /*gera os favoritos no html*/
-    loadedData.bookmarks.forEach((item, index) => {
-        addBookmarkToHTML(item.name, item.url, index);
-    });
-    /*carrega configuracoes*/ 
-    applySettings('accentcolor', loadedData.settings.accentcolor, false);
-    applySettings('borderradius', loadedData.settings.borderradius, false);
-    applySettings('searchprovider', loadedData.settings.searchprovider, false);
-    applySettings('background', loadedData.settings.background, false);
-
-    /*-----------------adicionais--------------*/
-    /*botoes de fechar de cada dialogo
-    para cada dialog (item), se houver um elemento de classe close, 
-    adicione um evento de clique a esse botao, 
-    onde acionara o fechamento do dialogo em questao (item)
-    Uma forma universal de configurar os botoes de fechar
-    nao importa a posicao do botao, se ele é um .close e esta dentro de um dialog,
-    ele o fecha.
-    */
-    Array.from(document.querySelectorAll("dialog")).forEach((item)=>{
-    if(item.querySelector(".close")){
-        item.querySelector(".close").addEventListener("click", ()=>{
-            item.close();
-        })
-    }
-    });
-    /*estilizacao das barras de range
-    o css nativamente uma personalizacao pra as barras de range
-    entao o jeito é apelar pra gambiarras como essa:
-    */
-    Array.from(document.querySelectorAll("input[type='range']")).forEach((item)=>{
-        item.addEventListener("input", (e)=>{
-            e.target.style.backgroundSize = (e.target.value - e.target.min) * 100 / (e.target.max - e.target.min) + '% 100%';
-        })
-    });
-
     /*------------------funcoes------------------------*/
-    /*adiciona favoritos ao html*/
-    function addBookmarkToHTML(name, url, id) {
+    function addBookmarkToHTML(name, url, id) {/*adiciona favoritos ao html*/
         newElement = document.createElement("a");
         newElement.classList = 'bookmark';
         newElement.href = url;
         newElement.innerHTML = `<span class='delete' onclick='remove(this.parentNode.id); return false;'>X</span><img src='https://www.google.com/s2/favicons?domain=${url}&sz=64'><a>${name}</a>`;
         document.getElementById("bookmarks").appendChild(newElement);
         document.getElementById("bookmarks").appendChild(document.getElementById("btn_addbookmark"));
+        /*caso o id n seja especificado, ele ira adicionar um novo elemento no json
+        caso seja especificado, ele ira somente gerar o favorito no html*/
         if(id >= 0 ) {
             newElement.id = id;
         }
@@ -420,14 +496,12 @@
             newElement.id = loadedData.bookmarks.push({"name":name,"url":url}) -1;
             saveChanges();
         }
-        newElement.addEventListener('mouseover', (e)=>{
-            x = e;
-        })
     }
-    function remove(id) {
+    function remove(id) {/*apagar favorito. funcao chamada pelos botoes de X em cada favorito*/
+        /*apaga o favorito e salva alteracoes*/
         loadedData.bookmarks.splice(id, 1);
-        console.log(id+' removido') 
         saveChanges();
+        /*recarrega a lista*/
         Array.from(document.getElementsByClassName('bookmark')).forEach((item, index) => {
             item.remove();
         })
@@ -435,7 +509,7 @@
             addBookmarkToHTML(item.name, item.url, index);
         });
     }
-    function applySettings(setting, value, pushToJson) {
+    function applySettings(setting, value, pushToJson) {/*aplica configuracoes*/
         switch(setting)  {
             case 'accentcolor':
                 document.body.style.setProperty('--accent-color', value);
@@ -468,20 +542,12 @@
             saveChanges();
         }
     }
-    /*
-    salva mudanças
-    eu poderia ter usado cookies, mas manipular jsons é mais facil
-    porem nao é eficiente
-    uma vez que eu preciso upar um json inteiro pro localstorage e ainda converter em string a cada alteração que faço
-    */
-    function saveChanges(){
+    function showDialog(id) {/*mostra dialogos*/
+        document.getElementById(id).showModal();
+    }
+    function saveChanges(){/*salva alteracoes, enviando elas pro localstorage*/
         localStorage.setItem(APP_ID, JSON.stringify(loadedData));  
         console.log("dados salvo");
-    }
-
-
-    function teste(x) {
-        (x) ? uai = " foi definido" : uai = 'nao foi definido um numero' ;
     }
 </script>
 </html>
