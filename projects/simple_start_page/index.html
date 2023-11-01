@@ -7,7 +7,7 @@
 </head>
 <style>
     /*reset css*/
-    * {padding: 0; margin: 0; box-sizing: border-box; font-family: sans-serif; background: none; border: none;}
+    * {padding: 0; margin: 0; box-sizing: border-box; font-family: sans-serif; background: none; border: none; user-select: none;}
     /*geral*/
     body {
         --accent-color: 355;
@@ -218,9 +218,10 @@
         border: none;
         background-color: transparent;
         border-bottom: 2px solid gray;
-        color: rgb(255, 255, 255);
+        color: rgba(255, 255, 255, 0.75);
     }
     dialog input[type="text"]:focus, dialog input[type="url"]:focus {
+        color: white;
         border-bottom: 2px solid hsl(var(--accent-color), 100%, 70%);
         outline: none;
     }
@@ -262,11 +263,6 @@
     dialog > img {
         width: 100%;
     }
-    @media screen and (max-width: 480px) {
-        dialog {
-            width: 95vw;
-        }
-    }
 
 </style>
 <body>
@@ -276,7 +272,7 @@
     <main>
         <button id="btn_settings" type="button" onclick="showDialog('settings')">Settings</button>
         <div id="clock">00:00:00</div>
-        <form onsubmit="window.location.href = loadedData.settings.searchprovider+this.children[0].value; return false;">
+        <form onsubmit="window.location.href = //loadedData.settings.searchprovider+this.children[0].value; return false;">
             <input type="search" placeholder="Pesquise por algo...">
         </form>
         <div id="bookmarks">
@@ -298,7 +294,7 @@
                         <input type="text" oninput="i_bname = this.value" placeholder="Nome">
                     </li>
                     <li>
-                        <input type="url" oninput="i_burl = this.value" placeholder="Url">
+                        <input type="url" oninput="i_burl = this.value" placeholder="Url" value="https://">
                     </li>
                 </ul>
             </main>
@@ -343,8 +339,15 @@
                     <b>Sobre</b>
                     <li>
                         <span>Simple Start Page</span>
-                        <p>v0.1 Alpha</p>
+                        <p>v0.2 Alpha</p>
                         <p>By Alefo</p>
+                    </li>
+                    <li>
+                        <span>O que há de novo?</span>
+                        <p>-Correção do relogio: o relogio era atualizado internalmente a cada milisegundo, agora é atualizado a cada segundo para evitar problemas de peformance.</p>
+                        <p>-Alteração na forma como é salvo os dados no localStorage: menor conversao de JSON pra string possivel. Se seus favoritos e configuracoes sumiram, é por esse motivo</p>
+                        <p>-Correções nas barras deslizantes da tela de configuracões (range bars): barra desconexa do thumb ao abrir.</p>
+                        <p>-Adicionado "https://" na barra de url na criação dos favoritos</p>
                     </li>
                     <a href="https://alefouau.github.io">
                         <span>Website</span>
@@ -393,59 +396,22 @@
     </dialog>
 </body>
 <script>
-    /*------------------constantes e variaveis------------------------*/
-    const APP_ID = "simple_start_page"
-    /*variaveis pra inputs. irei tirar tudo isso em breve e migrar pra eventlisteners*/
-    let loadedData;
     let i_bname;
     let i_burl;
-    let i_search;
-    /*
-    dados padrao (configuracoes e favoritos)
-    provavelmente essa variavel nao existira em versoes futuras
-    pretendo nao colocar favoritos iniciais.
-    configuracoes de aparencia padrao serao embutidos ja no css
-    e provedor de busca sera solicitado ao usuario na primeira vez que ele abrir
-    */
-    const DEFAULT_DATA = {
-        "bookmarks":[
-            {
-                "name":"Wellcome",
-                "url":"javascript:showDialog('wellcome')"
-            },
-            {
-                "name":"alefouau",
-                "url":"https://alefouau.github.io"
-            },
-            {
-                "name":"Hello!",
-                "url":"javascript:alert('Hello World!')"
-            }
-        ],
-        "settings":{
-            "accentcolor":"0",
-            "borderradius":"24",
-            "background":"",
-            "searchprovider":"https://duckduckgo.com/?q="
-        }
+    switch (undefined) {
+        case localStorage.bookmarks : localStorage.setItem('bookmarks', `[{"name": "Help", "url": "javascript:alert('click on + icon to add a bookmark')"}]`);
+        case localStorage.accentcolor : localStorage.setItem('accentcolor', '360');
+        case localStorage.background : localStorage.setItem('background', 'black');
+        case localStorage.borderradius : localStorage.setItem('borderradius', '24');
+        case localStorage.searchprovider : localStorage.setItem('searchprovider', 'https://duckduckgo.com/?q=');
+        case localStorage.wellcome : localStorage.setItem('wellcome', "true"); showDialog('wellcome');
     }
-
-    /*------------------inicializacao------------------------*/
-    /*carregamento de dados*/
-    if(localStorage.getItem(APP_ID) != undefined){/*se houver dados no localstorage, carregue-os*/
-        loadedData = JSON.parse(localStorage.getItem(APP_ID));
-    }
-    else {/*caso contrario, aplique as configuracoes padrao e exiba o dialogo de boas vindas*/
-        loadedData = DEFAULT_DATA;
-        showDialog('wellcome');
-        saveChanges();
-    }
-    loadedData.bookmarks.forEach((item, id) => { /*gera os favoritos no html*/ addBookmarkToHTML(item.name, item.url, id); });
+    JSON.parse(localStorage.getItem('bookmarks')).forEach((item, id) => { /*gera os favoritos no html*/ addBookmarkToHTML(item.name, item.url, id); });
     /*carrega configuracoes*/ 
-    applySettings('accentcolor', loadedData.settings.accentcolor, false);
-    applySettings('borderradius', loadedData.settings.borderradius, false);
-    applySettings('searchprovider', loadedData.settings.searchprovider, false);
-    applySettings('background', loadedData.settings.background, false);
+    applySettings('accentcolor', localStorage.accentcolor, false);
+    applySettings('borderradius', localStorage.borderradius, false);
+    applySettings('searchprovider', localStorage.searchprovider, false);
+    applySettings('background', localStorage.background, false);
 
     /*-----------------adicionais--------------*/
     /*
@@ -460,12 +426,16 @@
     o css nativamente uma personalizacao pra as barras de range
     entao o jeito é apelar pra gambiarras como essa:
     */
+    function fixBarSize(rangeNode){
+        rangeNode.style.backgroundSize = (rangeNode.value - rangeNode.min) * 100 / (rangeNode.max - rangeNode.min) + '% 100%';
+    }
     Array.from(document.querySelectorAll("input[type='range']")).forEach((item)=>{
+        fixBarSize(item);
         item.addEventListener("input", (e)=>{
-            e.target.style.backgroundSize = (e.target.value - e.target.min) * 100 / (e.target.max - e.target.min) + '% 100%';
+            fixBarSize(e.target)
         })
     });
-    setInterval(()=>{/*relogio*/
+    function updateClock() {
         var time = new Date();
         var hh = time.getHours();
         var mm = time.getMinutes();
@@ -483,7 +453,10 @@
             ss = "0"+ss;
         }
         document.getElementById("clock").innerText = hh+":"+mm+":"+ss;
-    })
+    }
+    updateClock();
+    setInterval(updateClock,1000);
+
     /*------------------funcoes------------------------*/
     function addBookmarkToHTML(name, url, id) {/*adiciona favoritos ao html*/
         newElement = document.createElement("a");
@@ -498,19 +471,21 @@
             newElement.id = id;
         }
         else {
-            newElement.id = loadedData.bookmarks.push({"name":name,"url":url}) -1;
-            saveChanges();
+            tmp_data = JSON.parse(localStorage.bookmarks);
+            newElement.id = tmp_data.push({"name":name,"url":url}) -1;
+            localStorage.bookmarks = JSON.stringify(tmp_data);
         }
     }
     function remove(id) {/*apagar favorito. funcao chamada pelos botoes de X em cada favorito*/
         /*apaga o favorito e salva alteracoes*/
-        loadedData.bookmarks.splice(id, 1);
-        saveChanges();
+        tmp_data = JSON.parse(localStorage.bookmarks);
+        tmp_data.splice(id, 1);
+        localStorage.bookmarks = JSON.stringify(tmp_data);
         /*recarrega a lista*/
         Array.from(document.getElementsByClassName('bookmark')).forEach((item, index) => {
             item.remove();
-        })
-        loadedData.bookmarks.forEach((item, index) => {
+        });
+        tmp_data.forEach((item, index) => {
             addBookmarkToHTML(item.name, item.url, index);
         });
     }
@@ -518,11 +493,9 @@
         switch(setting)  {
             case 'accentcolor':
                 document.body.style.setProperty('--accent-color', value);
-                loadedData.settings.accentcolor = value;
                 break;
             case 'borderradius':
                 document.body.style.setProperty('--border-radius', value + "px");
-                loadedData.settings.borderradius = value;
                 break;
             case 'background': 
                 var imgElement = document.getElementById("bg");
@@ -530,8 +503,7 @@
                     freader = new FileReader();
                     freader.onloadend = ()=>{
                         imgElement.src = freader.result;
-                        loadedData.settings.background = freader.result;
-                        saveChanges();
+                        localStorage.background = freader.result;
                     };
                     freader.readAsDataURL(value);
                 }
@@ -539,20 +511,15 @@
                     imgElement.src = value;
                 }
                 break;
-            case 'searchprovider': 
-                loadedData.settings.searchprovider = value;
-                break; 
         }
         if(pushToJson){
-            saveChanges();
+            if(typeof(value) == "string"){
+                localStorage.setItem(setting, value);
+            }
         }
     }
     function showDialog(id) {/*mostra dialogos*/
         document.getElementById(id).showModal();
-    }
-    function saveChanges(){/*salva alteracoes, enviando elas pro localstorage*/
-        localStorage.setItem(APP_ID, JSON.stringify(loadedData));  
-        console.log("dados salvo");
     }
 </script>
 </html>
