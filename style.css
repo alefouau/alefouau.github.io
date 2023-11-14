@@ -11,12 +11,17 @@ html, body {
 div#main {
     background-color: rgba(0,0,0,0.75);
 }
-body > img {
+body > img#bg {
     position: fixed;
     object-fit: cover;
     width: 100vw;
     height: 100vh;
     z-index: -10;
+}
+img#ehtfio-bot-status {
+    width:100%;
+    height:auto;
+    max-width:300px;
 }
 header {
     position: sticky;
