@@ -4,6 +4,8 @@ html, body {
     box-sizing: border-box;
     font-family: sans-serif;
     color: white
+    scroll-behavior: smooth;
+    scroll-padding-top: 48px;
 }
 :root {
     --accent-color: hsl(345, 100%, 70%); 
