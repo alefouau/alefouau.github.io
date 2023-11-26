@@ -6,6 +6,7 @@ html, body {
     color: white
     scroll-behavior: smooth;
     scroll-padding-top: 48px;
+    color: white;
 }
 :root {
     --accent-color: hsl(345, 100%, 70%); 
