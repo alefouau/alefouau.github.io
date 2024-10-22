@@ -1,0 +1,47 @@
+explicação +/- com codigo:
+-> criei uma variavel com uma lista de textinhos so pra testar, mas podia ser uma simples string q tb funcionaria, mas provavelmente se tu for usar isso pra cadastro de itens ou algo do genero, teria q ser array
+Se caso fosse string, eu nao precisaria usar o forEach tantas vezes, mas eu deveria fazer um tratamento a mais pra tornar a busca mais clara (ex, cortar o inicio do texto e deixar apenas os trechos nas quais a expressao que eu busquei aparece):
+let arr = [
+'Ferro que fere o ferro ferido ferro'
+,'flamengo'
+,'waliso ceo do sexo'
+,'happy sugar life que de happy não tem é nada'
+]
+----------------------------------------------
+-> variavel que localica onde esta o a div no html que eu vou usar pra mostar os textos, essa div tem o ID "list" (<div id="list"></div>)
+let list = document.getElementById("list");
+---------------------------------------------
+-> quando eu abro o html, ele executa esse forEach (loop do for soq pra arrays), significa "para cada item naquela lista de textos , execute a funcao de adicionar ela no meu html (appendInHtml()). Content é o texto em si, enquanto index é um numero q indica onde esta o texto dentro da minha array (esse index eu nem usei, nem sei pq eu coloquei ai, nesse caso ele é desnecessario ja que eu so preciso do texto em questao)
+Os nomes content e index sao so ilustrativos, poderia ser qualquer nomes, desde q estejam na ordem certa. Uma funcao dentro de um forEach tem q seguir um padrao onde o primeiro argumento recebe o conteudo em si de cada item da array, enquanto o segundo argumento recebe o indice (ex: ["a","b"], nesse caso, o "a" é o conteudo, e 0 é seu index):
+arr.forEach((content, index)=>{
+appendInHtml(content);
+})
+OBSERVAÇÂO: esse ()=>{} é uma funcao anonima. esse metodo forEach tem que receber uma funcao que sera acionada em cada item desse meu array, ao inves de eu ter que criar uma funcao separada pra isso (ex funcaoParaCadaItemDoMeuArray(textoEmSi, seuIndice)), eu crio uma funcao dentro desse metodo msm: (textoEmSi, seuIndice)=>{executa isso aqui}
+---------------------------------------------
+-> funcao responsavel por adicionar um determinado texto no meu html, nesse caso ele pega um texto como argumento (text), cria um elemento virtualmente (h3, é um elemento de titulo, por isso fica tudo em negrito la), pega esse texto recebido (text) e coloca dentro desse elemento que eu acabei de criar (innerHTML = "texto que eu quero colocar dentro desse elemento"), depois ele coloca esse elemento dentro da div que eu escolhi pra listar os itens (list.appendChild(meuElemento)):
+function appendInHtml(text){
+newElement = document.createElement("h3");
+newElement.innerHTML = text;
+list.appendChild(newElement);
+}
+CURIOSIDADE: para elementos em html, temos o innerHTML e o innerText. O innerHTML adicionar o texto como html, ou seja, se vc por um "<h1>abc</h1>", no html ele vai aparecer como ABC em negrito e gigante, ja com innerText, ele adiciona isso como texto real, nesse caso ele vai mostrar no html "<h1>abc</h1>" sem aplicar os efeitos do h1
+---------------------------------------------
+->funcao responsavel pela busca em si
+Essa funcao é acionada toda vez que eu digito algo naquela barra de busca (tem como vc colocar pra executar uma determinada funcao toda vez q vc interagir com um elemento em html usando algum event, nesse caso eu usei o evento oninput - quando o usuario digitar algo aqui, execute x funcao)
+No html tem esse elemento input q recebe texto: <input type="text" oninput="searcher(this.value)"
+Nesse caso o "this.value" pega o texto que esta nesse input e aciona a funcao searcher, essa funcao recebe esse texto.: 
+function searcher(x){
+list.innerHTML = ""; -> ele deixa a minha lista no html vazia toda vez que essa funcao searcher é execultada (ou seja, toda vez q eu digitar ele vai limpar a tela. Eu preciso disso pois se não ele vai colocar novos itens nessa lista junto aos que ja tem e fica itens repetidos la
+if(x != ''){ -> caso o texto recebido não seja vazio
+arr.forEach((content, index)=>{ -> pega cada item do meu array juntamente com seu index
+if(arr[index].search(x) >= 0){ -> se o metodo search encontrou a palavra digitada em cada texto
+hltext = content.replaceAll(x, "<strong>"+x+"</strong>") ->substitua todas as palavras no meu texto pelas mesmas palavras que estavam antes, so que agora destacadas (com o <strong>)
+appendInHtml(hltext); -> adiciona esse texto na qual tem a palavra buscada no html
+}
+})
+}
+else { -> se o campo de busca estiver vazio
+arr.forEach((content, index)=>{ -> mostre todos os textos do meu array no meu html (msm comandos de quando ele abre o meu html)
+appendInHtml(content);
+})
+}

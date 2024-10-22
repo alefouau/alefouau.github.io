@@ -1,0 +1,95 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    color: white;
+    scroll-behavior: smooth;
+    scroll-padding-top: 48px;
+}
+:root {
+    --accent-color: hsl(345, 100%, 70%); 
+}
+
+body > img#bg {
+    position: fixed;
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;
+}
+div#main {
+    background-color: rgba(0,0,0,0.75);
+}
+div#main > header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem; 
+}
+div#main > header > h2 {
+    margin: 0;
+} 
+div#main > header > nav {
+    display: flex;
+}
+div#main > header > nav > * {
+    color:var(--accent-color);
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: bold;
+    display: block;
+    padding: 1rem 0.5rem;
+}
+div#main > header > nav > *:hover {
+    background-color: rgba(0,0,0,0.5);
+}
+div#main > main, div#main > footer  {
+    max-width: 1280px;
+    margin: auto;
+    padding: 0 1rem;
+}
+div#main > main a {
+    color:var(--accent-color) ;
+}
+div#main > footer {
+    text-align: center;
+}
+.card-li {
+    padding: 0;
+}
+.card-li > * {
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(20,20,20,0.75);
+    max-width: 400px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+.card-li > * > img {
+    width: 64px;
+    height: 64px;
+    padding: 0.5rem;
+}
+.card-li > * h2 {
+    margin: 0;
+}
+.card-li > * main {
+    padding: 0.5rem;
+}
+.card-li > * footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+.card-li > * footer * {
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.5rem;
+}
+.card-li > * footer *:hover {
+    background-color: var(--accent-color);
+}

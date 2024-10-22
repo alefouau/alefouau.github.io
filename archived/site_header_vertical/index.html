@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="data.json"></script>
+</head>
+<style>
+    /* reset css*/
+    * {margin: 0; padding: 0; box-sizing: border-box; color: white; font-family: sans-serif;}
+    /*page orientation grid, padding and size*/
+    body {
+        display: grid;
+        grid-template-columns: max-content auto;
+        height: 100vh;
+        width: 100vw;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    /*general theming*/
+    .tab_fg, header {
+        background-color: rgba(25,25,25,0.5);
+        width: max-content;
+        border-radius: 0.5rem;
+    }
+    .tab_fg {
+        padding: 1rem;
+    }
+    /*header orientation and size*/
+    header, header > *{
+        display: flex;
+        flex-direction: column;
+    }
+    header > nav > a:hover {
+        background-color: hsla(0, 100%, 75%, 1);
+        color: black;
+        border-radius: 0.25rem;
+    }
+    header > nav > a {
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+    }
+    /*main orientation and size*/
+    main  {
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        scroll-behavior: smooth;
+    }
+    main > .tab {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    main .tab_fg {
+        display: flex;
+        flex-direction: column;
+        overflow:  auto;
+        max-height: 100%;
+        max-width: 100%;
+        gap:0.5rem;
+    }
+    /*other styles...*/
+    #lakista {
+        width: 256px;
+        margin-bottom: -8px;
+        z-index: 1;
+    }
+    #kaosproj {
+        width: 128px;
+        margin-bottom: -4px;
+        z-index: 1;
+    }
+    
+    /* generic elements*/
+    button {
+        border: none;
+        padding: 0.5rem;
+        margin: 0.5rem;
+    }
+    .button_no_bg {
+
+    }
+    .button_colored_bg {
+
+    }
+    .card_with_img {
+
+    }
+    .card_with_icon {
+
+    }
+    p {
+        font-size: 12pt;
+        text-align: justify;
+        line-height: 18pt;
+    }
+    /*orientation for mobile devices*/
+    @media screen and (max-width:600px) {
+        body {
+            grid-template-columns: none;
+            grid-template-rows: max-content auto;
+        }
+        header, header > *{
+            flex-direction: row;
+        }
+        header{
+            justify-content: space-between;
+            width: 100%;
+        }
+        .tab, .tab_fg {
+            min-width: 100%;
+        }
+        main {
+            width: 100%;
+            display: flex;
+        }
+    }
+    @media screen and (max-width:430px){
+        header {
+            flex-direction: column;
+        }
+    }
+
+
+</style>
+<body>
+    <header>
+        <span>
+            <img alt="logo">
+            Alefo
+        </span>
+        <nav>
+            <a href="#home">Início</a>
+            <a href="#projects">Projetos</a>
+            <a href="#posts">Postagens</a>
+            <a href="#about">Sobre</a>
+        </nav>
+    </header>
+    <main>
+        <div class="tab" id="home">
+            <img id="lakista" src="wellcome.png">
+            <div class="tab_fg">
+                <h1>Bem vindo!</h1>
+                <h2>Pagina de coisas e nao sei oq la</h2>
+            </div>
+        </div>
+        <div class="tab" id="projects">
+            <img id="kaosproj" src="projects.png">
+            <div class="tab_fg">
+                <h1>Projetos</h1>
+                <h2>Porcarias que eu faço no tempo livre</h2>
+                <div id="projects_container">
+
+                </div>
+            </div>
+        </div>
+        <div class="tab" id="posts">
+            <div class="tab_fg">
+                <h1>Postagens</h1>
+                <h2>la ele</h2>
+            </div>
+        </div>
+        <div class="tab" id="about">
+            <div class="tab_fg">
+                <h1>Sobre</h1>
+                <h2>Pagina pessoal feita em HTML5 puro</h2>
+                <p>v 0.0.3 KAOS</p>
+            </div>
+        </div>
+    </main>
+
+</body>
+    <script>
+        console.log(data.projects[0].name);
+
+        data.projects.forEach((item, index)=>{
+            console.log("ID: "+index+" NAME: "+item.name+" DESCRIPTION: "+item.description);
+
+            newElement = document.createElement("div");
+            newElement.className = "card_with_icon";
+            newElement.innerHTML = `<h3>${item.name}</h3><p>${item.description}</p>`;
+            document.getElementById("projects_container").appendChild(newElement);
+        });
+    </script>
+</html>

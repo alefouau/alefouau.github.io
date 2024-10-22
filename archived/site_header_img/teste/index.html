@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    strong {
+        background-color: yellow;
+        border: 1px solid black;
+    }
+</style>
+<body>
+    <form onsubmit="searcher(txt)">
+        <input type="text" oninput="searcher(this.value)">
+    </form>
+    
+    <div id="list">
+
+    </div>
+</body>
+<script>
+    /*array com os conteudos*/
+    let arr = [
+        'Ferro que fere o ferro ferido ferro'
+        ,'flamengo'
+        ,'waliso ceo do sexo'
+        ,'happy sugar life que de happy não tem é nada'
+        ,'bokutachi wa bekyou ga dekinai'
+        ,'teste do teste do teste, happy test'
+        ,'achei que seria difiil fazer um buscador em js'
+        ,'mas o proprio js tem um metodo chamado search() que ja faz parte do serviço'
+        ,'o search(TEXT) diz se em um texto possui a string TEXT e mostra o index inicial desse texto que estamos procurando'
+        ,'dai so combinar isso com um replace(), podendo ser util pra destacar o texto encontrado'
+        ,'o replaceAll(TEXTO_ANTIGO, TEXTO_NOVO) troca todas as palavra/expressao ja existente por uma nova'
+        ,'exemplo: meutext = "ola bom dia"'
+        ,'meutext.search("ola") //retorna 0, ele retornaria -1 caso n econtrasse a palavra'
+        ,'meutext.replaceAll("ola", "<strong>ola</strong> ")'
+        ,'com isso mente, so organizar o codigo com if e else e algumas funcoes pra adicionar ao html e prontinho'
+        ]
+    /*lista n html*/
+    let list = document.getElementById("list");
+    
+    /*ao iniciar, mostra todos os itens do array no html*/
+    arr.forEach((content, index)=>{
+        appendInHtml(content);
+    })
+
+    function appendInHtml(text){//funcao para adicionar ao html
+        newElement = document.createElement("h3");
+        newElement.innerHTML = text;
+        list.appendChild(newElement);
+    }
+    function searcher(x){//funcaoo de busca
+        list.innerHTML = "";//comeca limpando a lista mostrada na tela para dar espaco para os resultados da busca
+        if(x != ''){//caso tenha algum texto na barra de busca
+            arr.forEach((content, index)=>{//para cada item do array
+                if(arr[index].search(x) >= 0){//se esse item contem a palavra buscada
+                    hltext = content.replaceAll(x, "<strong>"+x+"</strong>")
+                    appendInHtml(hltext);//adicione o item ao html
+                }
+            })
+        }
+        else { //caso o campo de busca esteja vazio
+            arr.forEach((content, index)=>{//mostre todos os itens no html
+                appendInHtml(content);
+            })
+        }
+
+    }
+
+</script>
+</html>

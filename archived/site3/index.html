@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    html, h1 , h2, h3, h4, body, h4, p, span {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        color: white;
+    }
+    body {
+        --accent-color: 0,100%,70%;
+    }
+    @keyframes start {
+        0% {
+            transform: translatey(100px);
+            opacity: 0;
+        }
+        100% {
+            transform: translatey(0);
+            opacity: 1;
+        }
+    }
+    #website {
+        background-color: rgba(0,0,0,0.75);
+        height: 100vh;
+        width: 100vw;
+        z-index: 1;
+        overflow: auto;
+    }
+    #bg {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        object-fit: cover;
+    }
+    #website >  header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 0.5rem;
+        position: sticky;
+        top: 0;
+    }
+    #website > header > nav > * {
+        display: inline-block;
+        padding: 1rem 0.5rem;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    #website > header > nav > *:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    #logo {
+        font-weight: bolder;
+        background-image: url("./img/logo_mask.webp");
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20pt;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: -2px;
+    }
+    #website > main {
+        padding: 1rem;
+        max-width: 1366px;
+        margin: auto;
+        animation: start 200ms linear;
+    }
+    #website > footer {
+        text-align: center;
+    }
+    h1 {
+        font-size: 72pt;
+    }
+    h2 {
+        margin: 1rem 0;
+    }
+    #home_texts {
+        margin: 5rem 0;
+        text-align: left;
+    }
+    #proj_list, #post_list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .proj_card {
+        display: flex;
+        max-width: 480px;
+        background-color: rgba(20, 20, 20, 0.75);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+    }
+    .proj_card img {
+        height: 48px;
+        padding: 0.5rem;
+        padding-right: 1rem;
+    }
+    .proj_card header {
+        height: calc(48px + 1rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .proj_card footer {
+        float: right;
+        float: right;
+        text-align: right;
+    }
+    .proj_card footer a {
+        display: inline-block;
+        padding: 0.5rem;
+        text-decoration: none;
+        color: hsl(var(--accent-color));
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    .proj_card footer a:hover {
+        background-color: hsla(var(--accent-color),0.25);
+    }
+    .post_card {
+        width: 320px;
+        background-color: rgba(20, 20, 20, 0.75);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    .post_card img {
+        width: 100%;
+        height: auto;
+    }
+    .post_card main {
+        padding: 1rem;
+    }
+    .post_card h3 {
+        font-weight: lighter;
+        font-size: 18pt;
+        margin-bottom: 0.5rem;
+    }
+    .post_card p {
+    }
+</style>
+<body>
+    <img id="bg" src="./img/bg.jpg">
+    <div id="website">
+        <header>
+            <span id="logo">alefo</span>
+            <nav>
+                <a href="#home">Página inicial</a>
+                <a href="#projects">Projetos</a>
+                <a href="#about">Sobre</a>
+            </nav>
+        </header>
+        <main>
+            <div id="home">
+                <div id="home_texts">
+                    <h1>Bem vindo!</h1>
+                    <h2 id="random_text"></h2>
+                </div>
+            </div>
+            <div id="projects">
+                <div>
+                    <h2>Projetos</h2>
+                </div>
+                <div id="proj_list">
+                </div>
+            </div>
+            <div id="posts">
+                <div>
+                    <h2>Posts</h2>
+                </div>
+                <div id="post_list">
+                    <div class="post_card">
+                        <img src="img/generic_post.jpg">
+                        <main>
+                            <h3>Postagem-teste</h3>
+                            <p>Essa é uma postagem de testes, com uma descrição curta. Ao clicar, abre a postagem normalmente em tela cheia</p>
+                            <code>18 de fevereiro de 2024</code>
+                        </main>
+                    </div>
+                </div>
+            </div>
+            <div id="about">
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+
+</body>
+<script>
+    let data;
+    fetch('./data.json').then((res)=>{
+        res.json().then((jsonRes)=>{
+            data = jsonRes;
+            console.log(data);
+            genProjCard(data.projects);
+            document.getElementById('random_text').innerText = data.rphrases[Math.floor(Math.random()*data.rphrases.length)];
+        })
+    })
+    function genProjCard(projsArray){
+        projsArray.forEach(project => {
+            newEl = document.createElement('div');
+            newEl.classList = "proj_card"
+            let buttons = "";
+            if(project.github){
+                buttons += `<a href="${project.github}">Source code</a>`;
+            }
+            if(project.open){
+                buttons += `<a href="${project.open}">Open</a>`;
+            }
+            if(project.download){
+                buttons += `<a href="${project.download}">Download</a>`;
+            }
+            newEl.innerHTML = `
+                <img src="${(project.icon) ? project.icon : "img/proj.png"}">
+                <div>
+                    <header>
+                        <h4>${project.name}</h4>
+                        <code>${project.version}</code>
+                    </header>
+                    <main>
+                        <p>${project.desc}</p>
+                    </main>
+                    <footer>
+                        ${buttons}
+                    </footer>
+                </div>
+            `;
+     
+            document.getElementById('proj_list').appendChild(newEl);
+        });
+
+    }
+    function wanumber(){
+        dialog = document.createElement('dialog');
+        dialog.innerHTML = `
+        <form action="https://api.whatsapp.com/send/">
+        <input type="phone" name='phone' placeholder="Country + DDD + Phone Number">
+        <input type="text" name='text' placeholder="Message text">
+        <input type="password" name="psswd" id="">
+        <button type="submit">Ok</button>
+        </form>`;
+
+        document.body.appendChild(dialog);
+        dialog.showModal();
+    }
+</script>
+</html>

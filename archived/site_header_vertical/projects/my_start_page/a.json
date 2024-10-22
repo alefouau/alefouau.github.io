@@ -1,0 +1,21 @@
+let jsonbase = {
+    "favoritos": [
+        {
+            "name":"facebook", 
+            "url":"https://fb.me"
+        },
+        {
+            "name":"twitter", 
+            "url":"https://twitter.com"
+        },
+        {
+            "name":"instagram", 
+            "url":"https://instagram.com"
+        }
+    ], 
+    "configuracoes": {
+            "accentcolor":"crismon", 
+            "bg":"/bg.png", 
+            "searchprovider":"duckduckgo"
+    }
+}

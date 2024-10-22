@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notepad JS (ver 0.1)</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <!--<link rel="stylesheet" href="./style.css">-->
+</head>
+<style>
+    :root {
+        --accentcolor: rgb(255, 200, 0);
+        --background: black;
+        --textcolor: white;
+    }
+    @font-face {
+        font-family: Product Sans;
+        src: url(./font.ttf); 
+    }
+    body {
+        background: var(--background);
+        background-image: url("https://besthqwallpapers.com/Uploads/24-6-2018/56937/thumb2-kaoruko-moeta-pink-hair-manga-comic-girls-moeta-kaoruko.jpg") ;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: Product Sans;
+        color: var(--textcolor);
+        box-sizing: border-box;
+    }
+    #FAB {
+        position: fixed;
+        right: 1.25rem; bottom: 1.25rem;
+        background-color: var(--accentcolor);
+        padding: 1rem;
+        font-size: 2rem;
+        line-height: 1rem;
+        border-radius: 100%;
+        color:black;
+        box-shadow: 0 8px 2rem rgba(0,0,0,0.25);
+    }
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        background:linear-gradient(rgba(0,0,0,0.50),transparent)
+    }
+    h3 {
+        margin: 0;
+    }
+    #logo {
+        width: 24px;
+        height: 24px;
+        margin-left: 0.5rem;
+    }
+    #note-list {
+        padding: 1rem;
+        display: block;
+        height: max-content;
+    }
+
+    .colorpicker {
+        padding: 0; margin: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 20px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        line-height: 0;
+    }
+    .colorpicker::-webkit-color-swatch {
+        border-radius: 50%;
+        border: none;
+    }
+    .colorpicker::-moz-color-swatch {
+        border-radius: 50%;
+        border: none;
+    }
+
+    .note {
+        margin: 0.5rem;
+        float: left;
+        background: black;
+        opacity: 0.90;
+        width: 300px;
+        max-height: 300px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .note * {
+        opacity: 1;
+    }
+    .note input, textarea {
+        padding: 1rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 12pt;
+    }
+    .note textarea {
+        padding-top: 0;
+        resize: vertical;
+        width: 98%;
+        max-height: 240px;
+    }
+
+</style>
+<body>
+    <header>
+        <h3>Notepad</h3>
+        <img id="logo" src="logo.png">
+    </header>
+    <main id="note-list">
+
+    </main>
+    <div id="FAB" onclick="newNote('','')">+</div>
+</body>
+<script>
+    let defaultdata = {"title":["Bem vindo ao NoteJS"],"content":["versão 0.1 alpha /n Clique no + para adicionar novas anotações /n Para apagar uma anotação, so Deus sabe..."]}
+    let data = {"title":[""],"content":[""]}
+    if(localStorage.notejsdata == undefined){
+        localStorage.setItem("notejsdata", JSON.stringify(defaultdata));
+        data = defaultdata;
+    }
+    else {
+        data = JSON.parse(localStorage.notejsdata);
+    }
+    /*carregamento de dados*//*
+    for(i = 0; i < data.title.length; i++){
+        newNote(data.title[i],data.content[i]);
+        console.log("dados carregados!"+data.title[i]+data.content[i])
+    }
+    */
+
+    function save() {
+        localStorage.setItem("notejs", JSON.stringify(data));
+
+    }
+    function newNote(title, content){
+        data.title.push(title);
+        data.content.push(content);
+        let note_list = document.getElementById("note-list");
+        let nne = document.createElement("div");
+        nne.className = "note";
+        nne.id = data.title.length-1;
+        nne.setAttribute("oninput","saveNote(this)");
+        nne.value = "editing";
+        nne.innerHTML = `
+            <div class="note-header">
+                <input class="note-title" type="text" placeholder="Titulo da nota..." value="${title}">
+                <input class="colorpicker" type="color" value="#43da86">
+            </div>
+            <textarea class="note-content" placeholder="Conteúdo da nota..." value="${content}"></textarea>
+        
+        `;
+        note_list.appendChild(nne);
+    }
+    function saveNote(notenode) {
+        let note_title = notenode.getElementsByClassName("note-title");
+        let note_content = notenode.getElementsByClassName("note-content");
+        data.title[notenode.id] = note_title[0].value;
+        data.content[notenode.id] = note_content[0].value;
+        console.log(note_title[0].value+" "+note_content[0].value);
+    }
+</script>
+</html>

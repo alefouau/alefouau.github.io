@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ao Start Page</title>
+</head>
+<style>
+    * {box-sizing: border-box; padding: 0; margin: 0;color: white;}
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: url(bg.png), radial-gradient(transparent, rgba(0,0,0,0.5));
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-blend-mode: darken;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #searchbox {
+        position: relative;
+        width: 90%;
+        max-height: 90%;
+        font-size: 72px;
+        text-align: center;
+        border: none;
+        color: rgba(255,255,255,0.5);
+    }
+    #searchbox:focus {
+        outline: none;
+        color: white;
+    }
+    #searchbox:focus > #placeholder {
+        display: none;
+    }
+    #placeholder {
+        position: absolute;
+        left: 0; right: 0;
+        color: rgba(255,255,255,0.5);
+        z-index: -1;
+    }
+</style>
+<body>
+    <div id="searchbox" contenteditable="true"><span id="placeholder">Pesquisar...</span></div>
+</body>
+<script>
+    var searchbox = document.getElementById("searchbox");
+    searchbox.addEventListener("keydown", (e)=>{
+        if(e.key == "Enter"){
+            window.location.href = "https://duckduckgo.com/"+e.target.innerText;
+        }
+    })
+</script>
+</html>

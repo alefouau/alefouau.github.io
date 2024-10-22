@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tab</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.webp">
+</head>
+<body class="flex center">
+    <img id="background" src="">
+    <img onclick="openWindow('settings');" id="btn_settings" src="settings.svg">
+    <!--main content-->
+    <main class="flex collumn center">
+        <img id="banner" src="banner.jpg">
+        <form onsubmit="search(search_content); return false">
+            <input id="searchbox" type="search" placeholder="Pesquise ou digite uma URL" onchange="search_content = this.value">
+        </form>
+        <div class="flex center" id="bookmarks" class="flex center">
+            <a class="btn_bookmark flex collumn center" id="btn_addfav" onclick="openWindow('addfav'); return false">
+                Adicionar
+                <img src="addfav.svg">
+            </a>
+        </div>
+    </main>
+    <!--main content-->
+    <window-container id="settings">
+        <div>
+            <window-header class="flex">Configurações</window-header>
+            <window-main class="flex collumn">
+                <section>
+                    <h6>Provedor de busca</h6>
+                    <p>Defina qual plataforma será usada para pesquisar usando a barra de busca</p>
+                    <input id="i_search_provider" type="url" placeholder="ex: https://duckduckgo.com/?q=">
+                </section>
+                <section>
+                    <h6>Cor principal</h6>
+                    <p>Selecione a cor a ser usada em botões e outros elementos</p>
+                    <input id="i_accentcolor" type="color">
+                </section>
+                <section>
+                    <h6>Plano de fundo</h6>
+                    <p>Selecione a imagem de fundo personalizada (recomendado imagem menor que 5mb)</p>
+                    <input id="i_background" type="file">
+                </section>
+                <section>
+                    <h6>Bordas arredondadas</h6>
+                    <p>Definal o quao arredondadas serão as bordas dos botões de favoritos e barra de pesquisa</p>
+                    <input id="i_border_radius" type="range" min="0" max="24">
+                </section>
+            </window-main>
+            <window-footer class="flex">
+                <button>Resetar config.</button>
+                <button>Resetar tudo</button>
+            </window-footer>
+        </div>
+    </window-container>
+    <window-container id="addfav" class="center">
+        <form onsubmit="addBookmark(input_favname, input_favurl); return false;" class="flex collumn">
+            <window-header class="flex">Adicionar favorito</window-header>
+            <window-main class="flex collumn">
+                <input id="i_favname" onchange="input_favname = this.value" type="text" placeholder="Nome">
+                <input id="i_favurl" onchange="input_favurl = this.value" type="text" placeholder="Url">
+            </window-main>
+            <window-footer class="flex">
+                <button type="button" onclick="closeWindows(); return false">Cancelar</button>
+                <button type="submit">Adicionar</button>
+            </window-footer>
+        </form>
+    </window-container>
+    <a id="window_removefav" class="center" href="#"><img src="rm-fav.svg">Remover</a>
+</body>
+</html>

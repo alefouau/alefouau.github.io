@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {margin: 0; padding: 0; box-sizing: border-box;font-family: sans-serif;}
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100VW;
+    }
+    .dialog {
+        margin: auto;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 1rem 2rem rgba(0,0,0,0.5);
+    }
+    .dialog::backdrop {
+        background-color: rgba(0,0,0,0.5);
+    }
+    .dialog > header {
+        padding: 0.5rem 1rem;
+        margin-top: 0.5rem;
+    }
+    .dialog > main {
+        padding: 0.5rem 1rem;
+    }
+    .dialog > footer {
+        padding: 0.5rem;
+        float: right;
+    }
+    .dialog button {
+        background:none;
+        border: none;
+        padding: 0.5rem;
+        color: rgb(220, 20, 60);
+        letter-spacing: 1px;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+    .dialog button:hover {
+        background-color: rgba(220, 20, 60, 0.10) ;
+        
+    }
+    .button {
+        position: relative;
+        background-color: rgb(220, 20, 60);
+        padding: 0.5rem;
+        color: white;
+        font-weight: bold;
+        letter-spacing: 1px;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        transition-duration: 120ms;
+    }
+    .button:hover {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    }
+</style>
+<body>
+    <dialog class="dialog" id="dialogo_teste">
+        <header>
+            <h3>Titulo do dialogo</h3>
+        </header>
+        <main>
+            <p>conteudo do dialogo</p>
+        </main>
+        <footer>
+            <button onclick="closeDialog()">OK</button>
+            <button onclick="closeDialog()">Cancelar</button>
+        </footer>
+    </dialog>
+    <button class="button" onclick="showDialog()">Mostrar dialogo</button>
+</body>
+<script>
+    var dialogo_teste = document.querySelector("#dialogo_teste");
+    function createDialog(titulo, valorOuHtml, btn1, btn1_func, btn2, btn2_func){
+
+    }
+    function closeDialog(){
+        var closeTimeout = setTimeout(()=>{dialogo_teste.close()}, 1200);
+        dialogo_teste.animate([{transform:"translateX(0)", opacity:1},{transform:"translate(100%)"}],{duration:12000, iterations:1});
+    }
+    function showDialog(){
+        dialogo_teste.showModal();
+        dialogo_teste.animate([{transform:"scale(0.75)", opacity:0},{transform:"scale(1)", opacity:1}],{duration:120, iterations:1});
+    }
+</script>
+</html>

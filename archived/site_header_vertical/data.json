@@ -1,0 +1,34 @@
+data = {
+    "projects":[
+        {
+            "name":"AoStartPage",
+            "description":"Uma simples página inicial com imagens fofas da peronsagem Ao Manaka",
+            "ico":"ao_start_page/ico.png",
+            "action":"index.html"
+        },
+        {
+            "name":"My Start Page",
+            "description":"Uma pagina inicial personalizável, troque de fundo, mude cores, adicione favoritos e pesquise usando o serviço que desejar",
+            "ico":"my_start_page/ico.png",
+            "action":"index.html"
+        },
+        {
+            "name":"MD Lite",
+            "description":"Um estilo pre-definido para botoes, caixas de dialogo e etc baseado no material design, focando em fluidez acima de tudo!",
+            "ico":"mdlite/ico.png",
+            "action":"index.html"
+        },
+        {
+            "name":"Mycebook",
+            "description":"Customize a pagina do facebook da forma que quiser, mude cores, adicione um plano de fundo e bloqueie postagens patrocinadas",
+            "ico":"mycebook/ico.png",
+            "action":"mycebook.zip"
+        },
+        {
+            "name":"NotepadJS",
+            "description":"Faça anotações em blocos coloridos, feito em html puro",
+            "ico":"notepadjs/ico.png",
+            "action":"index.html"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "projects":[
+        {
+            "name":"Simple Start Page",
+            "version":"0.9 alpha",
+            "desc":"Uma página de 'Nova Aba' simples, customizável, leve, sem anuncios, trackers ou dependencias desnecessarias.",
+            "github":"https://github.com/alefouau/ssp/",
+            "icon":"https://raw.githubusercontent.com/alefouau/ssp/master/icon128.png",
+            "download":"https://github.com/alefouau/ssp/releases"
+        },
+        {
+            "name":"WANumber",
+            "version":"0.1 alpha",
+            "desc":"Converse diretamente com numeros de Whatsapp sem precisar salvar contato.",
+            "icon":"",
+            "open":"javascript:wanumber();"
+        }
+    ],
+    "rphrases":["waliso ceo do sexo", "iloveyou,gab", "Love is not a function!", "O importante é o que importa!", "Feliz 2012!", "Link Start!", "Rest in peace, Medusa.", "Coisas divertidas são divertidas!", "Você é especial!", "I love my computer friends <3", "thanks for using this page"],
+    "posts":[
+        {
+            "title":"Comentando sobre um texto especial...",
+            "desc":"no desc",
+            "date":"00/00/00",
+            "hour":"00:00",
+            "author":"Alefo",
+            "html":"posts/0000-00-00_00-00/index.html",
+            "img":"posts/0000-00-00_00-00/img.png"
+        },
+        {}
+    ]
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ápsd~sadsã~sá~d~a~</title>
+</head>
+<style>
+    h1, h2, p {margin:0}
+    body{
+        margin: 0;
+        padding: 0.5rem;
+        box-sizing: border-box;
+        background: url(./bg.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        
+        align-items: center;
+        color: white;
+        font-family: sans-serif;
+        
+    }
+    body > header, .tab_content{
+        background-color: rgba(50,50,50,0.8);
+        backdrop-filter: blur(16px);
+        border-radius: 8px;
+        margin: 0.5rem;
+    }
+    .tab_content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .tab_container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        
+    }
+    #tabs  {
+        height: 100%;
+    }
+    body > header {
+        padding: 1rem;
+    }
+    body > header nav {
+        width: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    body > header nav a {
+        padding: 0.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        color: white;
+    }
+    body > header nav a:hover {
+        background-color: rgba(255, 134, 134, 0.5);
+    }
+    body > header img {
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+        border-radius:100%;
+        margin: auto;
+    }
+    body > header h2 {
+        margin: 0.5rem;
+    }
+    body > main {
+        overflow: hidden;
+        height: 100%;
+        scroll-behavior: smooth;
+    }
+    @media screen and (max-width: 700px) {
+        body > header {
+            display: flex;
+            flex-direction: row;    
+            align-items: center;
+            padding: 0 0.5rem;
+            width: auto;
+        }
+        body > header > img {
+            width: 2rem;
+            height: 2rem;
+        }
+        body > header > nav {
+            flex-direction: row;
+        }
+        body {
+            flex-direction: column;
+        }
+        .tab_container {
+            float: left;
+        }
+    }
+</style>
+<body>
+    <header>
+        <img src="logo.png">
+        <h2>Alefo</h2>
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#posts">Posts</a>
+            <a href="#projects">Projects</a>
+            <a href="#about">About me</a>
+        </nav>
+    </header>
+    <main>
+        <div id="tabs">
+            <div id="inicio" class="tab_container">
+                <div class="tab_content">
+                    <h1 id="welcome-text">Bem vindo!</h1>
+                    <div>
+                        <p>Bem vindo a pior pagina ja feita na historia
+                            Sinta-se a vontade pra navegar usando os botões
+                            <br>
+                            ⬅️ deste lado aqui
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div id="posts" class="tab_container">
+                <div class="tab_content">
+                    <h1>Posts</h1>
+                    <p>Aleatoriedades que escrevo</p>
+                </div>
+            </div>
+            <div id="projects" class="tab_container">
+                <div class="tab_content">
+                    <h1>Projetos</h1>
+                    Não há nada aqui
+                </div>
+            </div>
+            <div id="about" class="tab_container">
+                <div class="tab_content">
+                    <h1>Sobre</h1>
+                    <h2>Sobre o site</h2>
+                    <p>alefowebpage - versão 0.1 KAOS</p>
+                    <h2>Sobre mim</h2>
+                    <p>undefined</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    let rd_easteregg = Math.floor(Math.random() * 10);
+    if (rd_easteregg == 5) {
+        document.getElementById("welcome-text").innerText = "Gab FOFAFOFAFOFA.";
+    }
+   
+</script>
+</html>
