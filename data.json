@@ -1,0 +1,22 @@
+{
+    "projects":[
+        {
+            "name":"Simple Start Page",
+            "version":"0.9 alpha",
+            "desc":"Uma página de 'Nova Aba' simples, customizável, leve, sem anuncios, trackers ou dependencias desnecessarias. (será upado em breve)",
+            "github":"https://github.com/alefouau/ssp/",
+            "icon":"https://raw.githubusercontent.com/alefouau/ssp/master/icon128.png",
+            "download":"https://github.com/alefouau/ssp/releases"
+        }
+    ],
+    "rphrases":["waliso ceo do sexo", "iloveyou,gab", "Love is not a function!", "O importante é o que importa!", "Feliz 2012!", "Link Start!", "Rest in peace, Medusa.", "Coisas divertidas são divertidas!", "Você é especial!", "I love my computer friends <3", "thanks for using this page"],
+    "posts":[
+        {
+            "title":"a dopamina não está funcionando",
+            "desc":"happyness = null",
+            "date":"2024-11-18",
+            "time":"01-27-55",
+            "author":"Alefo"
+        }
+    ]
+}
