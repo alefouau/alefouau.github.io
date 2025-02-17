@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+	<style>
+		html, body {
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			font-family: sans-serif;
+			color: white;
+			background-color: black;
+		}
+		#frame {
+			position: fixed;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			z-index: 0;
+		}
+		#bar {
+			position: fixed;
+			bottom: 1rem;
+			left: 0;
+			right: 0;
+		}
+		#bar, #loading_txt {
+			z-index: 1;
+			background-color: rgba(0,0,0,0.75);
+			width: max-content;
+			height: max-content;	
+			padding: 0.75rem;
+			border-radius: 0.5rem;
+			margin: auto;
+			backdrop-filter: blur(6px);
+		}
+		#loading_txt {
+			position: fixed;
+			inset: 0;
+			width: max-content;
+			height: max-content;
+			margin: auto;
+			z-index: 1;
+			background-color: rgba(0,0,0,0.5);
+		}
+		div#bar > span {
+			margin: 0;
+			padding: 0.5rem;
+			text-rendering: geometricPrecision;
+		}
+		input[type="number"] {
+			background-color: transparent;
+			border: none;
+			padding:none;
+			margin: none;
+			font-size: 12pt;
+		}
+		input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+			opacity: 1;
+			width: 16px;
+			margin: 0;
+			padding: 0;
+		}
+		#qt_ep {width: 2.5rem;}
+		#qt_fr {width: 4rem;}
+
+	</style>
+    <body>
+    	<main>
+    		<img id="frame">
+			<div id="loading_txt">⌛ Please wait...</div>
+			<div id="bar">
+				<span>Episode: <input type="number" id="qt_ep" min="1" max="12"></span>
+				<span>Frame: <input type="number" id="qt_fr" min="1" max="1"> of <span id="qt_tot_fr"></span></span>
+			</div>
+
+    </body>
+    <script>
+		const EPS = 12;
+		let fr_el = document.getElementById("frame");
+		let qt_ep_el = document.getElementById("qt_ep");
+		let qt_fr_el = document.getElementById("qt_fr");
+		let qt_totfr_el = document.getElementById("qt_tot_fr");
+		let loading_el = document.getElementById("loading_txt");
+		let ep;
+		qt_ep_el.addEventListener("change", (e)=>{
+			if(e.target.checkValidity() == true){setFrame(e.target.value, qt_fr_el.value);}
+		});
+		qt_fr_el.addEventListener("change", (e)=>{
+			if(e.target.checkValidity() == true){setFrame(qt_ep_el.value, e.target.value);}
+		});
+    	function getRand(max, min) {return Math.floor(Math.random() * max+1) + min; }
+		async function setFrame(episode,frame){
+			if(ep != episode){
+				await getTotalFrames(episode).then(totfr => {
+					qt_fr_el.max = totfr;
+					qt_totfr_el.innerText = totfr;
+					if(frame > totfr){
+						console.log("frame maior q frame tot", " ", frame, " ", totfr)
+						frame = totfr;
+					}
+					ep = episode;
+				});
+			}
+			qt_ep_el.value = episode;
+			qt_fr_el.value = frame;
+			loading_el.style.display = "inline";
+			fr_el.src = `https://raw.githubusercontent.com/alefouau/ehtfio/ep${episode}/frames/frame_${frame}.jpg`;
+			fr_el.addEventListener("load", ()=>{loading_el.style.display = "none";});
+		}
+		function getTotalFrames(episode){
+			return fetch(`https://raw.githubusercontent.com/alefouau/ehtfio/refs/heads/ep${episode}/config.conf`)
+				.then(res => res.text())
+				.then(txt => txt.match(/total_frame="([0-9]+)/)[1])
+		}
+		getTotalFrames(getRand(EPS, 0)).then(totfr => {setFrame(getRand(EPS, 0), getRand(totfr, 0))});
+
+
+    	</script>
+</html>    
