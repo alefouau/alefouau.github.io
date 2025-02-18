@@ -47,24 +47,30 @@
 			z-index: 1;
 			background-color: rgba(0,0,0,0.5);
 		}
-		div#bar > span {
+		#bar > span {
 			margin: 0;
 			padding: 0.5rem;
 			text-rendering: geometricPrecision;
 		}
-		input[type="number"] {
+		input[type="number"], button {
 			background-color: transparent;
 			border: none;
 			padding:none;
 			margin: none;
 			font-size: 12pt;
-			color: white;
+			color: hsla(0%, 0%, 100%, 0.5);
 		}
 		input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
 			opacity: 1;
 			width: 16px;
 			margin: 0;
 			padding: 0;
+		}
+		button {
+			color: hsl(0, 100%, 70%);
+		}
+		button:hover {
+			background-color: hsla(0, 100%, 70%, 0.25);
 		}
 		#qt_ep {width: 2.5rem;}
 		#qt_fr {width: 4rem;}
@@ -75,51 +81,66 @@
     		<img id="frame">
 			<div id="loading_txt">⌛ Please wait...</div>
 			<div id="bar">
-				<span>Episode: <input type="number" id="qt_ep" min="1" max="12"></span>
-				<span>Frame: <input type="number" id="qt_fr" min="1" max="1"> of <span id="qt_tot_fr"></span></span>
+				<span>Episode: <input type="number" id="qt_ep" min="1" max="12"> Frame: <input type="number" id="qt_fr" min="1" max="1"> <span id="qt_tot_fr"></span></span>
+				<button type="button" id="random_btn">Random</button>
 			</div>
 
     </body>
     <script>
 		const EPS = 12;
+		const url = new URL(window.location.href);
+		let sel_ep = 0;
+		let sel_ep_totfr = 0;
+		let sel_fr = 0;
+
 		let fr_el = document.getElementById("frame");
 		let qt_ep_el = document.getElementById("qt_ep");
 		let qt_fr_el = document.getElementById("qt_fr");
 		let qt_totfr_el = document.getElementById("qt_tot_fr");
 		let loading_el = document.getElementById("loading_txt");
-		let ep;
-		qt_ep_el.addEventListener("change", (e)=>{
-			if(e.target.checkValidity() == true){setFrame(e.target.value, qt_fr_el.value);}
-		});
-		qt_fr_el.addEventListener("change", (e)=>{
-			if(e.target.checkValidity() == true){setFrame(qt_ep_el.value, e.target.value);}
-		});
-    	function getRand(max, min) {return Math.floor(Math.random() * max+1) + min; }
-		async function setFrame(episode,frame){
-			if(ep != episode){
-				await getTotalFrames(episode).then(totfr => {
-					qt_fr_el.max = totfr;
-					qt_totfr_el.innerText = totfr;
-					if(frame > totfr){
-						console.log("frame maior q frame tot", " ", frame, " ", totfr)
-						frame = totfr;
-					}
-					ep = episode;
-				});
-			}
-			qt_ep_el.value = episode;
-			qt_fr_el.value = frame;
+		let random_btn_el = document.getElementById("random_btn")
+
+		async function setFrame(e,f,dontsetvalues) {
 			loading_el.style.display = "inline";
-			fr_el.src = `https://raw.githubusercontent.com/alefouau/ehtfio/ep${episode}/frames/frame_${frame}.jpg`;
+			if(e == null){e = getRand(EPS, 0)}
+			if (e != sel_ep){
+				sel_ep = e;
+				await fetch(`https://raw.githubusercontent.com/alefouau/ehtfio/refs/heads/ep${e}/config.conf`)
+					.then(res => res.text())
+					.then(txt => txt.match(/total_frame="([0-9]+)/)[1])
+					.then(totfr => {
+					sel_ep_totfr = totfr;
+					qt_fr_el.max = totfr;
+					qt_totfr_el.innerText = 'of '+totfr;
+					})
+			}
+			if(f == null){f = getRand(sel_ep_totfr, 0)}
+			sel_fr = Math.min(f, sel_ep_totfr);
+			if(dontsetvalues != true){
+				qt_ep_el.value = sel_ep;
+				qt_fr_el.value = sel_fr;
+			}
+			url.searchParams.set('ep', sel_ep);
+			url.searchParams.set('fr', sel_fr);
+			window.history.replaceState({}, '', url.href);
+			fr_el.src = `https://raw.githubusercontent.com/alefouau/ehtfio/ep${sel_ep}/frames/frame_${sel_fr}.jpg`;
 			fr_el.addEventListener("load", ()=>{loading_el.style.display = "none";});
 		}
-		function getTotalFrames(episode){
-			return fetch(`https://raw.githubusercontent.com/alefouau/ehtfio/refs/heads/ep${episode}/config.conf`)
-				.then(res => res.text())
-				.then(txt => txt.match(/total_frame="([0-9]+)/)[1])
-		}
-		getTotalFrames(getRand(EPS, 0)).then(totfr => {setFrame(getRand(EPS, 0), getRand(totfr, 0))});
 
+		qt_ep_el.addEventListener("change", (e)=>{
+			if(e.target.checkValidity() == true){setFrame(e.target.value, sel_fr, true);}
+			else{e.target.value = sel_ep;}
+		});
+		qt_fr_el.addEventListener("change", (e)=>{
+			if(e.target.checkValidity() == true){setFrame(sel_ep, e.target.value, true);}
+			else{e.target.value = sel_fr;}
+		});
+		random_btn_el.addEventListener("click", ()=>{
+			setFrame();
+		})
+    	function getRand(max, min) {return Math.floor(Math.random() * max+1) + min; }
+
+		setFrame(url.searchParams.get('ep'), url.searchParams.get('fr'));
 
     	</script>
 </html>    
