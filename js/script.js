@@ -2,14 +2,14 @@ let data;
 fetch('./data.json').then((res)=>{
     res.json().then((jsonRes)=>{
         data = jsonRes;
-        console.log(data);
         genProjCard(data.projects);
-        genPostsCard(data.posts);
+        //genPostsCard(data.posts);
         document.getElementById('random_text').innerText = data.rphrases[Math.floor(Math.random()*data.rphrases.length)];
     })
 })
 function genPostsCard(postsArray){
-    postsArray.forEach(post => {
+    if(postsArray.length > 0) {
+        postsArray.forEach(post => {
             let fulldate = new Date(Date.parse(post.date+" "+post.time.replaceAll('-',':'))).toLocaleTimeString("pt-br",{year:"numeric", month:"long",day:"numeric"});
             newEl = document.createElement('div');
             newEl.classList = "post_card";
@@ -24,41 +24,40 @@ function genPostsCard(postsArray){
                 </a>
             `
             document.getElementById("post_list").appendChild(newEl);
-    })
+        });
+        document.querySelector("#post_list > .loading").remove();
+    }
+    else {
+        
+    }
+
 }
 function genProjCard(projsArray){
     projsArray.forEach(project => {
         newEl = document.createElement('div');
-        newEl.classList = "proj_card"
+        newEl.classList = "proj_card";
         let buttons = "";
-        if(project.github){
-            buttons += `<a href="${project.github}">Source code</a>`;
-        }
-        if(project.open){
-            buttons += `<a href="${project.open}">Open</a>`;
-        }
-        if(project.download){
-            buttons += `<a href="${project.download}">Download</a>`;
-        }
+        project.buttons.forEach(e=>{
+            buttons+=`<a href="${e.link}">${e.label}</a>`
+        })
         newEl.innerHTML = `
-            <img src="${(project.icon) ? project.icon : "img/proj.png"}">
-            <div>
-                <header>
-                    <h4>${project.name}</h4>
-                    <code>${project.version}</code>
-                </header>
-                <main>
-                    <p>${project.desc}</p>
-                </main>
-                <footer>
-                    ${buttons}
-                </footer>
+            <div class="proj_header">
+                <img src="${project.icon}">
+                <div>
+                    <h3>${project.name}</h3>
+                    <span class="proj_card_version">${project.version}</span>
+                </div>
+            </div>
+            <div class="proj_main">
+                <p>${project.desc}</p>
+            </div>
+            <div class="proj_footer">
+                ${buttons}
             </div>
         `;
- 
         document.getElementById('proj_list').appendChild(newEl);
+        
     });
-
 }
 function wanumber(){
     dialog = document.createElement('dialog');
