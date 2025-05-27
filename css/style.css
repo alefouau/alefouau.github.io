@@ -66,7 +66,7 @@ header{
 #logo {
     font-weight: bold;
     letter-spacing: -2px;
-    background: url("img/logo_mask.webp");
+    background: url("/img/logo_mask.webp");
     background-clip: text;
     background-repeat: no-repeat;
     background-size: cover;
