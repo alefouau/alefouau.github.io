@@ -23,7 +23,7 @@
         {
             "name":"Hoshitele Frame Viewer",
             "version":"0.2 alpha",
-            "desc":"A lightweight and customizable new tab page for Chromium browsers, whitout trackers, ads or heavy libraries.",
+            "desc":"A static website to view frames of Hoshikuzu Telepath anime. You can fork this repo and use to other animes too.",
             "buttons":[
                 {"label":"Github", "link":"https://github.com/alefouau/hoshitele-frame-viewer"},
                 {"label":"Open", "link":"https://alefouau.github.io/hoshitele-frame-viewer"}
