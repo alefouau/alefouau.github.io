@@ -25,7 +25,7 @@
             "version":"0.2 alpha",
             "desc":"A lightweight and customizable new tab page for Chromium browsers, whitout trackers, ads or heavy libraries.",
             "buttons":[
-                {"label":"Github", "link":"https://github.com/alefouau/KnDiscord"},
+                {"label":"Github", "link":"https://github.com/alefouau/hoshitele-frame-viewer"},
                 {"label":"Open", "link":"https://alefouau.github.io/hoshitele-frame-viewer"}
             ],
             "icon":"img/proj.png"
